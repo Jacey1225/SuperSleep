@@ -22,11 +22,15 @@ class Layer:
         return self.a
     
 class FNN:
-    def __init__(self, input_size, hidden1_size, hidden2_size, output_size):
-        self.input_layer = Layer(input_size, output_size, layer_type='input')
-        self.hidden_layer1 = Layer(input_size, hidden1_size, layer_type='hidden')
-        self.hidden_layer2 = Layer(hidden1_size, hidden2_size, layer_type='hidden')
-        self.output_layer = Layer(hidden2_size, output_size, layer_type='output')
+    def __init__(self, input_size, hidden1_size, hidden2_size, output_size, 
+                 input_weights=None, input_biases=None, 
+                 hidden1_weights=None, hidden1_biases=None, 
+                 hidden2_weights=None, hidden2_biases=None, 
+                 output_weights=None, output_biases=None):
+        self.input_layer = Layer(input_size, output_size, input_weights, input_biases, layer_type='input')
+        self.hidden_layer1 = Layer(input_size, hidden1_size, hidden1_weights, hidden1_biases, layer_type='hidden')
+        self.hidden_layer2 = Layer(hidden1_size, hidden2_size, hidden2_weights, hidden2_biases, layer_type='hidden')
+        self.output_layer = Layer(hidden2_size, output_size, output_weights, output_biases, layer_type='output')
 
         self.pred_value = None
     
@@ -35,10 +39,7 @@ class FNN:
         self.out1 = self.input_layer.forward(row_input)  
         self.out2 = self.hidden_layer1.forward(self.out1)    
         self.out3 = self.hidden_layer2.forward(self.out2)
-        self.pred_value = self.output_layer.forward(self.out3)
-
-        return self.pred_value
-        
+        self.pred_value = self.output_layer.forward(self.out3)        
     
     def backward(self, true_value, learning_rate=0.01):
         loss = Loss(self.pred_value, true_value)
@@ -111,4 +112,54 @@ class FNN:
         self.input_layer.weights = in_gradient.weights
         self.input_layer.biases = in_gradient.biases 
 
-        
+class TrainData:
+    def __init__(self, epochs, filename="data/Health_Sleep_Statistics.csv"):
+        self.filename = filename
+        self.epochs = epochs
+        self.data = pd.read_csv(self.filename)
+        self.data = self.data.dropna()
+        self.features = self.data.drop(column=["Sleep Quality"])
+        self.labels = self.data["Sleep Quality"].values
+    
+    def feed_input(self):
+        for i in range(self.epochs):
+            input_weights = None
+            input_biases = None
+
+            hidden1_weights = None
+            hidden1_biases = None
+
+            hidden2_weights = None
+            hidden2_biases = None
+
+            output_weights = None
+            output_biases = None
+            for index, row in self.features.iterrows():
+                label = self.labels[index]
+                feed = FNN(input_size=len(row), 
+                           hidden1_size=15, 
+                           hidden2_size=10, 
+                           output_size=1,
+                           input_weights=input_weights, input_biases=input_biases,
+                           hidden1_weights=hidden1_weights, hidden1_biases=hidden1_biases,
+                           hidden2_weights=hidden2_weights, hidden2_biases=hidden2_biases,
+                           output_weights=output_weights, output_biases=output_biases)
+                feed.forward(row.values)
+                feed.backward(label, learning_rate=0.01)
+                input_weights = feed.input_layer.weights
+                input_biases = feed.input_layer.biases
+
+                hidden1_weights = feed.hidden_layer1.weights
+                hidden1_biases = feed.hidden_layer1.biases
+
+                hidden2_weights = feed.hidden_layer2.weights
+                hidden2_biases = feed.hidden_layer2.biases
+
+                output_weights = feed.output_layer.weights
+                output_biases = feed.output_layer.biases
+            
+        return feed.input_layer.weights, feed.input_layer.biases, \
+               feed.hidden_layer1.weights, feed.hidden_layer1.biases, \
+               feed.hidden_layer2.weights, feed.hidden_layer2.biases, \
+               feed.output_layer.weights, feed.output_layer.biases
+
