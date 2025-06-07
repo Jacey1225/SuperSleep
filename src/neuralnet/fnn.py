@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from src.neuralnet.NeuralNetFuncions import Variables, Gradient, Loss, Activations
+from src.neuralnet.NeuralNetFuncions import Gradient, Loss, Activations, Normalize
 
 class Layer:
     def __init__(self, input_size, output_size, weights=None, biases=None, layer_type='input'):
@@ -120,20 +120,18 @@ class TrainData:
         self.data = self.data.dropna()
         self.features = self.data.drop(column=["Sleep Quality"])
         self.labels = self.data["Sleep Quality"].values
+        
+        self.normalize = Normalize(self.data)
+        self.data = self.normalize.not_digit()
+        self.data = self.normalize.adjust_outliers()
     
     def feed_input(self):
         for i in range(self.epochs):
-            input_weights = None
-            input_biases = None
+            input_weights, input_biases, 
+            hidden1_weights, hidden1_biases, 
+            hidden2_weights, hidden2_biases, 
+            output_weights, output_biases = None
 
-            hidden1_weights = None
-            hidden1_biases = None
-
-            hidden2_weights = None
-            hidden2_biases = None
-
-            output_weights = None
-            output_biases = None
             for index, row in self.features.iterrows():
                 label = self.labels[index]
                 feed = FNN(input_size=len(row), 
