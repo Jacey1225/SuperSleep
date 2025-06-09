@@ -42,7 +42,7 @@ class FNN:
         self.pred_value = self.output_layer.forward(self.out3)        
     
     def backward(self, true_value, learning_rate=0.01):
-        loss = Loss(self.pred_value, true_value)
+        loss = Loss(pred_value=self.pred_value, true_value=true_value)
         error = loss.mse()
 
 # ========= Output Layer =========
@@ -113,24 +113,31 @@ class FNN:
         self.input_layer.biases = in_gradient.biases 
 
 class TrainData:
-    def __init__(self, epochs, filename="data/Health_Sleep_Statistics.csv"):
+    def __init__(self, epochs, train_frac=0.8, filename="data/Health_Sleep_Statistics.csv"):
         self.filename = filename
         self.epochs = epochs
         self.data = pd.read_csv(self.filename)
-        self.data = self.data.dropna()
-        self.features = self.data.drop(columns=["Sleep Quality"])
-        self.labels = self.data["Sleep Quality"].values
+        self.train_size = int(len(self.data) * train_frac)
         
         self.normalize = Normalize(self.data)
         self.data = self.normalize.not_digit()
         self.data = self.normalize.adjust_outliers()
+
+        self.training_data = self.data[:self.train_size]
+        self.test_data = self.data[self.train_size:]
+        self.features = self.training_data.drop(columns=["Sleep Quality"])
+        self.labels = self.training_data["Sleep Quality"].values
     
     def feed_input(self):
         for i in range(self.epochs):
-            input_weights, input_biases, 
-            hidden1_weights, hidden1_biases, 
-            hidden2_weights, hidden2_biases, 
-            output_weights, output_biases = None
+            input_weights = None
+            input_biases = None
+            hidden1_weights = None
+            hidden1_biases = None
+            hidden2_weights = None 
+            hidden2_biases = None
+            output_weights = None 
+            output_biases = None
 
             for index, row in self.features.iterrows():
                 label = self.labels[index]
@@ -160,4 +167,11 @@ class TrainData:
                feed.hidden_layer1.weights, feed.hidden_layer1.biases, \
                feed.hidden_layer2.weights, feed.hidden_layer2.biases, \
                feed.output_layer.weights, feed.output_layer.biases
+
+    def save_weights(self, weights, biases, filename="data/weights.npz"):
+        np.savez(filename, 
+                 input_weights=weights[0], input_biases=biases[0],
+                 hidden1_weights=weights[1], hidden1_biases=biases[1],
+                 hidden2_weights=weights[2], hidden2_biases=biases[2],
+                 output_weights=weights[3], output_biases=biases[3])
 

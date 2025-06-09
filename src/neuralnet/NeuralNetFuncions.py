@@ -2,9 +2,8 @@ import numpy as np
 import pandas as pd
 
 class Variables:  
-    def __init__(self, activation, product, next_layer_dLdz=None, next_layer_weights=None, last_out=None, 
+    def __init__(self, activation=None, product=None, next_layer_dLdz=None, next_layer_weights=None, last_out=None, 
                  weights=None, biases=None, pred_value=None, true_value=None, error=None):
-        
         self.a = activation
         self.z = product
         self.weights = weights
@@ -28,7 +27,7 @@ class Gradient(Variables):
             dLdyt = np.dot(self.next_layer_dLdz, self.next_layer_weights.T)
             dLdz = Activations.relu_derivative(self.z) * dLdyt
 
-        dLdw = dLdz.reshape(-1, 1) * self.last_out.reshape(1, -1)
+        dLdw = np.outer(self.last_out, dLdz)
         dLdb = dLdz
 
         self.weights -= learning_rate * dLdw
@@ -38,6 +37,9 @@ class Gradient(Variables):
 
 class Loss(Variables):
     def mse(self):
+        if self.pred_value is None or self.true_value is None:
+            raise ValueError("pred_value and true_value must be set before calculating loss.")
+        
         self.error = np.square(np.subtract(self.pred_value, self.true_value))
         return self.error
 
