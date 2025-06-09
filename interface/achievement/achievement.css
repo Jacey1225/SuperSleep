@@ -1,0 +1,111 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Sora', sans-serif;
+}
+
+.breathing {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #1E2A38 radial-gradient(circle at center, #4a6595 0%, transparent 75%);
+    background-repeat: no-repeat;
+    background-size: 150% 150%;
+    background-position: center center; 
+    animation: breatheBackground 2.5s ease-in-out infinite;
+}
+
+
+/* FIRST CHOICE
+@keyframes breatheBackground {
+    0%, 100% {
+        background-size: 100% 100%; 
+        opacity: 1;
+    }
+    50% {
+        background-size: 105% 105%; 
+        opacity: 0.95;
+    }
+} */
+
+
+/* SECOND CHOICE */
+@keyframes breatheBackground {
+    0%, 100% {
+        background-size: 100% 100%; 
+        opacity: 1;
+    }
+    35% {
+        background-size: 105% 105%;
+        opacity: 0.95;
+    }
+    70% {
+        background-size: 135% 135%;
+        opacity: 0.95;
+    }
+}
+
+.title {
+    font-size: 1.4em;
+    margin: 1rem auto;
+    line-height: 1.8rem;
+    font-weight: bold;
+}
+
+.text {
+    color: white;
+    text-align: center;
+}
+
+.button_container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0rem 1rem 0rem 1rem;
+    gap: 1rem;
+}
+
+.choices {
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 2em 1em 1em 1em;
+    border-radius: 1rem;
+    border: none;
+}
+
+.continue_container {
+    display: flex;
+    margin-bottom: 2rem;
+    margin-top: auto; 
+    justify-content: center;
+}
+
+button {
+    text-align: center;
+    color: white;
+    background-color: #7C6FF0;
+    padding: 1rem 8rem 1rem 8rem;
+    border-radius: 4rem;
+    border: none;
+    font-family: 'Sora', sans-serif;
+}
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20rem;
+    margin-bottom: auto;
+}
