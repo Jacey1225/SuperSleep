@@ -27,10 +27,10 @@ class FNN:
                  hidden1_weights=None, hidden1_biases=None, 
                  hidden2_weights=None, hidden2_biases=None, 
                  output_weights=None, output_biases=None):
-        self.input_layer = Layer(input_size, output_size, input_weights, input_biases, layer_type='input')
-        self.hidden_layer1 = Layer(input_size, hidden1_size, hidden1_weights, hidden1_biases, layer_type='hidden')
-        self.hidden_layer2 = Layer(hidden1_size, hidden2_size, hidden2_weights, hidden2_biases, layer_type='hidden')
-        self.output_layer = Layer(hidden2_size, output_size, output_weights, output_biases, layer_type='output')
+        self.input_layer = Layer(input_size, hidden1_size, input_weights, input_biases, layer_type='input')
+        self.hidden_layer1 = Layer(hidden1_size, hidden2_size, hidden1_weights, hidden1_biases, layer_type='hidden')
+        self.hidden_layer2 = Layer(hidden2_size, output_size, hidden2_weights, hidden2_biases, layer_type='hidden')
+        self.output_layer = Layer(output_size, 1, output_weights, output_biases, layer_type='output')
 
         self.pred_value = None
     
@@ -118,7 +118,7 @@ class TrainData:
         self.epochs = epochs
         self.data = pd.read_csv(self.filename)
         self.data = self.data.dropna()
-        self.features = self.data.drop(column=["Sleep Quality"])
+        self.features = self.data.drop(columns=["Sleep Quality"])
         self.labels = self.data["Sleep Quality"].values
     
     def feed_input(self):
