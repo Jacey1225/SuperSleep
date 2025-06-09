@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 class Variables:  
     def __init__(self, activation, product, next_layer_dLdz=None, next_layer_weights=None, last_out=None, 
@@ -58,3 +59,30 @@ class Activations:
     def relu_derivative(z):
         result = np.where(z > 0, 1, 0)
         return result
+    
+class Normalize:
+    def __init__(self, data):
+        self.data = pd.DataFrame(data)
+        self.mean = np.mean(data, axis=0)
+        self.std = np.std(data, axis=0)
+    
+    def not_digit(self):
+        self.data["Gender"].replace("Female", 0, inplace=True)
+        self.data["Gender"].replace("Male", 1, inplace=True)
+        
+        self.data["BMI Category"].replace(["Normal", "Normal Weight"], 0, inpalce=True)
+        self.data["BMI Category"].replace("Overweight", 1, inplace=True)
+        self.data["BMI Category"].replace("Obese", 2, inplace=True)
+
+        self.data["Sleep Disorder"].replace("None", 0, inplace=True)
+        self.data["Sleep Disorder"].replace(["Sleep Apnea", "Insomnia"], 1, inplace=True)
+
+    def adjust_outliers(self, out=2):
+        positive_range = self.mean + (out * self.std)
+        negative_range = self.mean - (out * self.std)
+        outliers = self.data.columns[(self.data > positive_range or self.data < negative_range).any()]
+
+        for outlier in outliers:
+            min = np.min(self.data[outlier])
+            max = np.max(self.data[outlier])
+            self.data[outlier] = (self.data[outlier] - min) / (max - min)
