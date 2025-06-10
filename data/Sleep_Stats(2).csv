@@ -1,4 +1,4 @@
-Person ID,Gender,Age,Sleep Duration,Quality of Sleep,Physical Activity Level,Stress Level,BMI Category,Heart Rate,Daily Steps,Sleep Disorder
+User ID,Gender,Age,Sleep Duration,Sleep Quality,Physical Activity Level,Stress Level,BMI Category,Heart Rate,Daily Steps,Sleep Disorders
 1,Male,27,6.1,6,42,6,Overweight,77,4200,None
 2,Male,28,6.2,6,60,8,Normal,75,10000,None
 3,Male,28,6.2,6,60,8,Normal,75,10000,None
