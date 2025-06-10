@@ -1,0 +1,46 @@
+.device-selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.device-box {
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #A0A3B4;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  font-size: 2rem;
+  background-color: transparent;
+}
+
+.device-box:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #7C6FF0;
+}
+
+.device-box .plus {
+  color: #A0A3B4;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+.device-checkbox {
+  display: none;
+}
+
+/* Checked State */
+.device-checkbox:checked + .plus {
+  color: white;
+}
+
+.device-checkbox:checked ~ .device-box {
+  border: 2px solid #7C6FF0;
+  background-color: #2F2F37;
+}
