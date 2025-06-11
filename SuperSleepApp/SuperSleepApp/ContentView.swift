@@ -15,3 +15,13 @@ struct SuperSleepAppApp: App {
         }
     }
 }
+
+struct ContentView: View {
+    var body: some View {
+        WelcomeView()
+    }
+}
+
+#Preview {
+    ContentView()
+}

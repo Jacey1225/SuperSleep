@@ -1,0 +1,245 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Sora', sans-serif;
+}
+
+.breathing {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #1E2A38 radial-gradient(circle at center, #4a6595 0%, transparent 75%);
+    background-repeat: no-repeat;
+    background-size: 150% 150%;
+    background-position: center center; 
+    animation: breatheBackground 2.5s ease-in-out infinite;
+}
+
+.moon {
+    height: 90px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -4rem 0rem 0rem 0rem;
+}
+
+/* FIRST CHOICE
+@keyframes breatheBackground {
+    0%, 100% {
+        background-size: 100% 100%; 
+        opacity: 1;
+    }
+    50% {
+        background-size: 105% 105%; 
+        opacity: 0.95;
+    }
+} */
+
+
+/* SECOND CHOICE */
+@keyframes breatheBackground {
+    0%, 100% {
+        background-size: 100% 100%; 
+        opacity: 1;
+    }
+    35% {
+        background-size: 105% 105%;
+        opacity: 0.95;
+    }
+    70% {
+        background-size: 135% 135%;
+        opacity: 0.95;
+    }
+}
+
+.title {
+    font-size: 1.4em;
+    margin: 1rem auto;
+    line-height: 1.8rem;
+    font-weight: bold;
+}
+
+.text {
+    color: white;
+    text-align: center;
+}
+
+.button_container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0rem 1rem 0rem 1rem;
+    gap: 1rem;
+}
+
+.choices {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1); /* White with 10% opacity */
+    padding: 1.2em 1em 1em 1em;
+    border-radius: 1rem;
+    border: none;
+    font-size: 1em;
+}
+
+.choices .icons {
+    filter: none;
+}
+
+.choices:hover {
+    border: #08675F solid 0.1em;
+    color: #A6ABFB;
+}
+
+.continue_container {
+    display: flex;
+    margin-bottom: 2rem;
+    margin-top: auto; 
+    justify-content: center;
+}
+
+.continue_class {
+    text-align: center;
+    color: #A0A3B4;
+    background-color: #2F2F37;
+    padding: 1rem 8rem 1rem 8rem;
+    border-radius: 4rem;
+    border: none;
+    font-family: 'Sora', sans-serif;
+}
+
+.continue_container button:hover {
+    background-color: #7C6FF0;
+    color: white;
+}
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10rem;
+    margin-bottom: auto;
+}
+
+.first_choice {
+    display: flex;
+    flex-direction: column;
+}
+
+.icons {
+    height: 80px;
+    width: 80px;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.icons:hover {
+    color: #7C6FF0;
+}
+
+#continueBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.choices.active {
+  border: #A6ABFB solid 0.12em;
+  color: #A6ABFB;
+  background-color: none; /* subtle purple tint */
+}
+
+.choices.active .icons {
+  filter: brightness(0) saturate(100%) invert(37%) sepia(64%) saturate(528%) hue-rotate(210deg) brightness(101%) contrast(92%);
+}
+
+.choices:not(.active) {
+  color: white;
+}
+
+.choices:not(.active) .icons {
+  filter: none;
+}
+
+#whiteBox {
+    border: #7C6FF0 solid 0.12em;
+    color: #7C6FF0;
+    background-color: none;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    width: 90%;
+    line-height: 2rem;
+    display: none;
+}
+
+.white_text {
+    text-align: center;
+}
+
+.maintext {
+    font-size: 1.1em;
+    line-height: 1.3rem;
+}
+
+.subtext {
+    opacity: 60%;
+    font-size: 0.9em;
+}
+
+.number_input {
+    width: 45%;
+}
+
+.time_input {
+    width: 45%;
+    float: right;
+    background-color: none;
+    appearance: none;
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+    cursor: pointer;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23333"><path d="M4 6l4 4 4-4z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+    transition: border-color 0.2s ease;
+}
+
+.inputs {
+    background: none;
+    border: #556679 solid 0.12em;
+    border-radius: 0.3rem;
+    font-size: 1.3em;
+    padding: 1.1rem 0.3rem 1.1rem 0.3rem;
+    color: white;
+    text-align: center;
+}
+
+/* .white-box {
+  width: 100%;
+  padding: 1rem;
+  background-color: white;
+  color: #2F2F37;
+  text-align: center;
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 2px solid #e0e0e0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+} */

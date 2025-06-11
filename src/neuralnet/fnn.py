@@ -5,6 +5,8 @@ from src.neuralnet.NeuralNetFuncions import Gradient, Loss, Activations, Normali
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# MARK: Layer Initialization
 class Layer:
     def __init__(self, input_size, output_size, weights=None, biases=None, layer_type='input'):
         self.output_size = output_size
@@ -23,7 +25,8 @@ class Layer:
             self.a = Activations.sigmoid(self.z)
 
         return self.a
-    
+
+# MARK: Propagation
 class FNN:
     def __init__(self, input_size, hidden1_size, hidden2_size, output_size, 
                  input_weights=None, input_biases=None, 
@@ -83,7 +86,6 @@ class FNN:
         self.hidden_layer2.biases = h2_gradient.biases
 
 # ========= Hidden Layer 1 =========
-
         h1_gradient = Gradient(
             activation=self.hidden_layer1.a,
             product=self.hidden_layer1.z,
@@ -99,7 +101,7 @@ class FNN:
         self.hidden_layer1.weights = h1_gradient.weights
         self.hidden_layer1.biases = h1_gradient.biases
         
-# ========= Input Layer =========
+# ========= Input Layer ========= 
 
         in_gradient = Gradient(
             activation=self.input_layer.a,
@@ -120,6 +122,7 @@ class FNN:
         self.forward(row_input)
         return self.pred_value
 
+# MARK: Training
 class TrainData:
     def __init__(self, epochs, train_frac=0.8, filename="data/Sleep_Stats(2).csv"):
         self.filename = filename
@@ -187,6 +190,7 @@ class TrainData:
                  hidden2_weights=weights[2], hidden2_biases=biases[2],
                  output_weights=weights[3], output_biases=biases[3])
 
+# MARK: Testing
 class TestData:
     def __init__(self,  test_frac=0.2, data_file="data/weights(2).npz", test_file="data/Sleep_Stats(2).csv"):
         self.data_file = data_file
@@ -242,6 +246,7 @@ class TestData:
             true_value = (label * (self.Y_Max - self.Y_Min)) + self.Y_Min
             logger.info(f"Predicted Value: {pred_value}: Normalized: {np.round(prediction)} -> True Value: {true_value}")
 
+# MARK: Main Execution
 if __name__ == "__main__":
     # Create a TrainData instance
     trainer = TrainData(epochs=100)
