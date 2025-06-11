@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>devices page</title>
+    <link rel="stylesheet" href="devices.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="breathing"></div>
+    <div id="main_content">
+        <img class="moon" src="../assets/success_moon.svg">
+        <div class="top_content">
+            <p class="top_text">Connect your health device</p>
+            <p class="top_text bottom">Sync your activity and sleep data to get better, personalized insights.</p>
+        </div>
+
+        <div id="fitbit">
+            <div class="image_div">
+                <img class="image" src="successfitbit.svg">
+            </div>
+            <div class="column">
+                <p class="fit fitbit_title">Fitbit</p>
+                <p class="automatic">Automatically sync your steps, workouts, and sleep.</p>
+            </div>
+            <div class="label_div">
+                <label class="device-box">
+                    <input type="checkbox" class="device-checkbox">
+                    <span class="plus">+</span>
+                </label>
+            </div>
+        </div>
+
+        <div id="fitbit">
+            <div class="image_div">
+                <img class="image" src="successheart.svg">
+            </div>
+            <div class="column">
+                <p class="fit fitbit_title">Google Fit</p>
+                <p class="automatic">Track and sync your fitness and sleep data effortlessly.</p>
+            </div>
+            <div class="label_div">
+                <label class="device-box">
+                    <input type="checkbox" class="device-checkbox">
+                    <span class="plus">+</span>
+                </label>
+            </div>
+        </div>
+
+        <div id="fitbit">
+            <div class="image_div">
+                <img class="image" src="successapple.svg">
+            </div>
+            <div class="column">
+                <p class="fit fitbit_title">Apple Health</p>
+                <p class="automatic">Connect to get complete insights from your Apple devices.</p>
+            </div>
+            <div class="label_div">
+                <label class="device-box">
+                    <input type="checkbox" class="device-checkbox">
+                    <span class="plus">+</span>
+                </label>
+            </div>
+        </div>
+        <p id="sync">Sync your data for better results</p>
+        <div class="bottom_fixed">
+            <a id="skip" href="#">Skip for now</a>
+            <div class="continue_container">
+                <button class="continue_class" id="continueBtn" disabled>Continue</button>
+            </div>  
+        </div>
+    </div>
+
+    <script src="devices.js"></script>
+</body>
+</html>
