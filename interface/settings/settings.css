@@ -11,7 +11,6 @@ body {
     width: 100vw;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     font-family: 'Sora', sans-serif;
 }
 
@@ -22,7 +21,7 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: #1E2A38 radial-gradient(circle at center, #4a6595 0%, transparent 75%);
+    background: #1E2A38;
     background-repeat: no-repeat;
     background-size: 150% 150%;
     background-position: center center; 
@@ -35,10 +34,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: -4rem 0rem 0rem 0rem;
 }
 
-@keyframes breatheBackground {
+/* @keyframes breatheBackground {
     0%, 100% {
         background-size: 100% 100%; 
         opacity: 1;
@@ -51,7 +49,7 @@ body {
         background-size: 135% 135%;
         opacity: 0.95;
     }
-}
+} */
 
 .continue_container {
     display: flex;
@@ -73,4 +71,76 @@ body {
 .continue_container button:hover {
     background-color: #7C6FF0;
     color: white;
+}
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: auto;
+    margin-top: 1rem;
+}
+
+/* OTHER STUFF */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0rem 1.5rem 0rem;
+}
+
+#settings {
+    margin-left: 2rem;
+}
+
+#profile {
+    margin-right: 2rem;
+}
+
+#line_break {
+    border-bottom: #F5F7FA1A solid 0.1em;
+    width: 100%;
+    margin-top: -0.5rem;
+}
+
+#button_container {
+    display: flex;
+    margin: 0 auto;
+}
+
+.john,
+.gray {
+    background-color: rgba(43, 61, 79, 0.4);
+    border: none;
+    padding: 1rem;
+    display: flex;
+    width: 22rem;
+    justify-content: space-between;
+}
+
+#jj {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+#arrow {
+    float: right;
+}
+
+/* MAIN STUFF */
+
+#reminder_title {
+    margin: 2.5rem 0rem 1rem 2rem;
+    font-size: 1em;
+    color: #A5BED4;
+}
+
+#full_notifs {
+    margin: -1rem auto 0rem auto;
+}
+
+.gray {
+    margin-top: 1.2rem;
+    color: #F5F6F8;
+    font-weight: 400;
 }

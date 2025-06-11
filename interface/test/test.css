@@ -1,46 +1,105 @@
-.device-selector {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
-}
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter for consistency */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f3f4f6; /* Equivalent to Tailwind bg-gray-100 */
+            padding: 16px; /* Equivalent to Tailwind p-4 */
+            margin: 0;
+            box-sizing: border-box;
+        }
 
-.device-box {
-  width: 100px;
-  height: 100px;
-  border: 2px dashed #A0A3B4;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  position: relative;
-  font-size: 2rem;
-  background-color: transparent;
-}
+        /* Container for the example */
+        .container {
+            background-color: #ffffff; /* Equivalent to Tailwind bg-white */
+            padding: 32px; /* Equivalent to Tailwind p-8 */
+            border-radius: 8px; /* Equivalent to Tailwind rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind shadow-xl */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px; /* Equivalent to Tailwind space-y-6 */
+            max-width: 400px;
+            width: 100%;
+        }
 
-.device-box:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: #7C6FF0;
-}
+        /* Heading Style */
+        .container h1 {
+            font-size: 2rem; /* Equivalent to Tailwind text-3xl */
+            font-weight: bold; /* Equivalent to Tailwind font-bold */
+            color: #1f2937; /* Equivalent to Tailwind text-gray-800 */
+            margin-bottom: 16px; /* Equivalent to Tailwind mb-4 */
+        }
 
-.device-box .plus {
-  color: #A0A3B4;
-  pointer-events: none;
-  font-weight: bold;
-}
+        /* Individual toggle row */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            gap: 16px; /* Equivalent to Tailwind space-x-4 */
+            width: 100%; /* Ensure rows take full width within container */
+            justify-content: space-between; /* Distribute text and toggle */
+        }
 
-.device-checkbox {
-  display: none;
-}
+        .toggle-row span {
+            font-size: 1.125rem; /* Equivalent to Tailwind text-lg */
+            color: #374151; /* Equivalent to Tailwind text-gray-700 */
+        }
 
-/* Checked State */
-.device-checkbox:checked + .plus {
-  color: white;
-}
+        /* Custom CSS to style the toggle switch */
+        /* Hide the default checkbox input */
+        .toggle-checkbox {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-.device-checkbox:checked ~ .device-box {
-  border: 2px solid #7C6FF0;
-  background-color: #2F2F37;
-}
+        /* Style the toggle label (the track) */
+        .toggle-label {
+            position: relative;
+            display: inline-block;
+            width: 60px; /* Width of the toggle track */
+            height: 34px; /* Height of the toggle track */
+            background-color: #cbd5e1; /* Original slate-300 color */
+            border-radius: 34px; /* Rounded corners for the track */
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out; /* Smooth transition for background */
+        }
+
+        /* Style the toggle thumb (the circle) */
+        .toggle-label::after {
+            content: '';
+            position: absolute;
+            top: 4px; /* Adjust vertical position */
+            left: 4px; /* Adjust horizontal position */
+            width: 26px; /* Width of the thumb */
+            height: 26px; /* Height of the thumb */
+            background-color: #f8fafc; /* Original slate-50 color */
+            border-radius: 50%; /* Make it a circle */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for thumb movement */
+        }
+
+        /* When the checkbox is checked, change the background color of the label (track) */
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3b82f6; /* Original blue-500 color when checked */
+        }
+
+        /* When the checkbox is checked, move the thumb to the right */
+        .toggle-checkbox:checked + .toggle-label::after {
+            transform: translateX(26px); /* Move 26px to the right */
+        }
+
+        /* Add focus styling for accessibility */
+        .toggle-checkbox:focus + .toggle-label {
+            outline: 2px solid #3b82f6; /* Blue outline on focus */
+            outline-offset: 2px;
+        }
+
+        /* Paragraph for description */
+        .description-text {
+            font-size: 0.875rem; /* Equivalent to Tailwind text-sm */
+            color: #4b5563; /* Equivalent to Tailwind text-gray-600 */
+            margin-top: 24px; /* Equivalent to Tailwind mt-6 */
+            text-align: center;
+        }
