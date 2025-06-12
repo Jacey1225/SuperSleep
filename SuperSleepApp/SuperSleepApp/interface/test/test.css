@@ -1,105 +1,78 @@
-        body {
-            font-family: 'Inter', sans-serif; /* Using Inter for consistency */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-color: #f3f4f6; /* Equivalent to Tailwind bg-gray-100 */
-            padding: 16px; /* Equivalent to Tailwind p-4 */
-            margin: 0;
-            box-sizing: border-box;
-        }
+/* Base container */
+.css-dropdown {
+  position: relative;
+  width: 150px;
+  font-family: 'Sora', sans-serif;
+}
 
-        /* Container for the example */
-        .container {
-            background-color: #ffffff; /* Equivalent to Tailwind bg-white */
-            padding: 32px; /* Equivalent to Tailwind p-8 */
-            border-radius: 8px; /* Equivalent to Tailwind rounded-lg */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to Tailwind shadow-xl */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px; /* Equivalent to Tailwind space-y-6 */
-            max-width: 400px;
-            width: 100%;
-        }
+/* The summary button */
+.css-dropdown summary {
+  list-style: none;            /* Remove default arrow */
+  background: black;
+  border: #08675F solid 0.3em;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-        /* Heading Style */
-        .container h1 {
-            font-size: 2rem; /* Equivalent to Tailwind text-3xl */
-            font-weight: bold; /* Equivalent to Tailwind font-bold */
-            color: #1f2937; /* Equivalent to Tailwind text-gray-800 */
-            margin-bottom: 16px; /* Equivalent to Tailwind mb-4 */
-        }
+/* Remove default marker (arrow) */
+.css-dropdown summary::-webkit-details-marker {
+  display: none;
+}
 
-        /* Individual toggle row */
-        .toggle-row {
-            display: flex;
-            align-items: center;
-            gap: 16px; /* Equivalent to Tailwind space-x-4 */
-            width: 100%; /* Ensure rows take full width within container */
-            justify-content: space-between; /* Distribute text and toggle */
-        }
+/* Arrow icon */
+.css-dropdown .arrow {
+  margin-left: 10px;
+  font-size: 1.5rem;
+}
 
-        .toggle-row span {
-            font-size: 1.125rem; /* Equivalent to Tailwind text-lg */
-            color: #374151; /* Equivalent to Tailwind text-gray-700 */
-        }
+/* Dropdown list */
+.css-dropdown .dropdown-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  width: 100%;
+  background: #34495e;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 100;
+}
 
-        /* Custom CSS to style the toggle switch */
-        /* Hide the default checkbox input */
-        .toggle-checkbox {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+/* List items */
+.css-dropdown .dropdown-list li {
+  padding: 0;
+}
 
-        /* Style the toggle label (the track) */
-        .toggle-label {
-            position: relative;
-            display: inline-block;
-            width: 60px; /* Width of the toggle track */
-            height: 34px; /* Height of the toggle track */
-            background-color: #cbd5e1; /* Original slate-300 color */
-            border-radius: 34px; /* Rounded corners for the track */
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out; /* Smooth transition for background */
-        }
+/* Hide actual radio inputs */
+.css-dropdown input[type="radio"] {
+  display: none;
+}
 
-        /* Style the toggle thumb (the circle) */
-        .toggle-label::after {
-            content: '';
-            position: absolute;
-            top: 4px; /* Adjust vertical position */
-            left: 4px; /* Adjust horizontal position */
-            width: 26px; /* Width of the thumb */
-            height: 26px; /* Height of the thumb */
-            background-color: #f8fafc; /* Original slate-50 color */
-            border-radius: 50%; /* Make it a circle */
-            transition: transform 0.3s ease-in-out; /* Smooth transition for thumb movement */
-        }
+/* Label styling for options */
+.css-dropdown label {
+  display: block;
+  padding: 12px 16px;
+  color: white;
+  cursor: pointer;
+}
 
-        /* When the checkbox is checked, change the background color of the label (track) */
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #3b82f6; /* Original blue-500 color when checked */
-        }
+/* Hover effect */
+.css-dropdown label:hover {
+  background: #3d566e;
+}
 
-        /* When the checkbox is checked, move the thumb to the right */
-        .toggle-checkbox:checked + .toggle-label::after {
-            transform: translateX(26px); /* Move 26px to the right */
-        }
+/* Close dropdown when not open */
+.css-dropdown[open] .dropdown-list {
+  display: block;
+}
 
-        /* Add focus styling for accessibility */
-        .toggle-checkbox:focus + .toggle-label {
-            outline: 2px solid #3b82f6; /* Blue outline on focus */
-            outline-offset: 2px;
-        }
-
-        /* Paragraph for description */
-        .description-text {
-            font-size: 0.875rem; /* Equivalent to Tailwind text-sm */
-            color: #4b5563; /* Equivalent to Tailwind text-gray-600 */
-            margin-top: 24px; /* Equivalent to Tailwind mt-6 */
-            text-align: center;
-        }
+/* OPTIONAL: Use CSS to change selected text via pseudo-selector */
+input[type="radio"]:checked + label::before {
+  content: attr(for);
+  display: none;
+}

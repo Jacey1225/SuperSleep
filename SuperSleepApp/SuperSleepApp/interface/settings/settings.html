@@ -27,21 +27,48 @@
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Sleep time reminder</p>
-                    <!-- insert toggle code -->
+                    <div class="container">
+                        <div class="toggle-row">
+                            <div>
+                                <!-- The actual checkbox input (hidden) -->
+                                <input type="checkbox" id="toggle_sleep" class="toggle-checkbox">
+                                <!-- The label that visually represents the toggle switch -->
+                                <label for="toggle_sleep" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="gray">
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Morning hydration reminder</p>
-                    <!-- insert toggle code -->
+                    <div class="container">
+                        <div class="toggle-row">
+                            <div>
+                                <!-- The actual checkbox input (hidden) -->
+                                <input type="checkbox" id="toggle_hydrate" class="toggle-checkbox">
+                                <!-- The label that visually represents the toggle switch -->
+                                <label for="toggle_hydrate" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="gray">
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Habit check-in notifications</p>
-                    <!-- insert toggle code -->
+                    <div class="container">
+                        <div class="toggle-row">
+                            <div>
+                                <!-- The actual checkbox input (hidden) -->
+                                <input type="checkbox" id="toggle_habit" class="toggle-checkbox">
+                                <!-- The label that visually represents the toggle switch -->
+                                <label for="toggle_habit" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,14 +78,34 @@
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Language</p>
-                    <!-- insert toggle code -->
+                    <details class="css-dropdown right_side">
+                        <summary>
+                            <span class="selected-option choice">English</span>
+                            <span class="arrow">&#9662;</span>
+                        </summary>
+                        <ul class="dropdown-list">
+                            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+                            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+                            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+                        </ul>
+                    </details>
                 </div>
             </div>
             <div class="gray">
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Time Zone</p>
-                    <!-- insert toggle code -->
+                    <details class="css-dropdown right_side">
+                        <summary>
+                            <span class="selected-option choice">CST</span>
+                            <span class="arrow">&#9662;</span>
+                        </summary>
+                        <ul class="dropdown-list">
+                            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+                            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+                            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+                        </ul>
+                    </details>
                 </div>
             </div>
         </div>
@@ -68,7 +115,17 @@
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Font Size</p>
-                    <!-- insert toggle code -->
+                    <details class="css-dropdown right_side">
+                        <summary>
+                            <span class="selected-option choice">Medium</span>
+                            <span class="arrow">&#9662;</span>
+                        </summary>
+                        <ul class="dropdown-list">
+                            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+                            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+                            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+                        </ul>
+                    </details>
                 </div>
             </div>
         </div>
@@ -78,33 +135,33 @@
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Privacy Policy</p>
-                    <!-- insert toggle code -->
+                    <p class="right_side">></p>
                 </div>
             </div>
             <div class="gray">
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Sign Out</p>
-                    <!-- insert toggle code -->
+                    <p class="right_side">></p>
                 </div>
             </div>
             <div class="gray">
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
                     <p>Contact Support</p>
-                    <!-- insert toggle code -->
+                    <p class="right_side">></p>
                 </div>
             </div>
             <div class="gray delete">
                 <div class="icon_text">
                     <img class="main_icons" src="sprofile.svg">
-                    <p>Delete Account</p>
-                    <!-- insert toggle code -->
+                    <p class="delete_account">Delete Account</p>
+                    <p class="right_side">></p>
                 </div>
             </div>
         </div>
-        <div class="line_break lb_two"></div>
     </div>
+    <div class="line_break lb_two"></div>
     <footer>
         <button class="footer_col static">
             <img class="footer_prof" src="sprofile.svg">
@@ -118,8 +175,8 @@
             <img class="footer_prof" src="sprofile.svg">
             History
         </button>
-        <button class="footer_col">
-            <img class="footer_prof" src="sprofile.svg">
+        <button class="footer_col settings_button">
+            <img class="footer_prof settings_image" src="sprofile.svg">
             Settings
         </button>
     </footer>

@@ -3,22 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML & Plain CSS Toggle Switch</title>
+    <title>Document</title>
     <link rel="stylesheet" href="test.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Toggle Switch Example</h1>
-
-        <div class="toggle-row">
-            <span>Dark Mode</span>
-            <div>
-                <!-- The actual checkbox input (hidden) -->
-                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
-                <!-- The label that visually represents the toggle switch -->
-                <label for="darkModeToggle" class="toggle-label"></label>
-            </div>
-        </div>
-    </div>
+    <details class="css-dropdown">
+        <summary>
+            <span class="selected-option">Select a size</span>
+            <span class="arrow">&#9662;</span>
+        </summary>
+        <ul class="dropdown-list">
+            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+        </ul>
+    </details>
 </body>
 </html>
