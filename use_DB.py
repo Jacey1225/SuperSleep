@@ -61,7 +61,7 @@ class DBConnection:
         except Error as e:
             logger.error("Error while connecting to MySQL", e)
 
-    def select_items(self, select_value, where_values, values=None, fetchAmount=1, desc=True):
+    def select_items(self, select_value, where_values, values=None, fetchAmount=1):
         self.open()
 
         limit_clause = f"LIMIT {fetchAmount}" if fetchAmount else ""

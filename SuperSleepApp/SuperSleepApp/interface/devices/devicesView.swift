@@ -20,8 +20,7 @@ struct DevicesView: View {
         ZStack {
             BreathingBackground()
                 .ignoresSafeArea()
-            VStack(spacing: 0) {
-                Spacer().frame(height: 24)
+            VStack(spacing: 10) {
                 Image("success_moon")
                     .resizable()
                     .modifier(MoonIconStyle())
@@ -31,7 +30,7 @@ struct DevicesView: View {
                     Text("Sync your activity and sleep data to get better, personalized insights.")
                         .modifier(DevicesSubtitleStyle())
                 }
-                .padding(.bottom, 8)
+                .padding(.bottom, 0)
                 ForEach(devices.indices, id: \.self) { idx in
                     DeviceCard(
                         device: devices[idx],
@@ -45,9 +44,10 @@ struct DevicesView: View {
                 Text("Sync your data for better results")
                     .modifier(DevicesSyncTextStyle())
                     .padding(.top, 8)
-                Spacer()
+                Spacer(minLength: 0)
             }
-            .padding(.bottom, 100)
+            .padding(.top, 8)
+            .padding(.bottom, 8)
 
             VStack {
                 Spacer()
@@ -80,7 +80,7 @@ struct DeviceCard: View {
     let onToggle: () -> Void
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 16) {
             Image(device.imageName)
                 .resizable()
                 .modifier(DeviceIconStyle())
@@ -96,8 +96,14 @@ struct DeviceCard: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .modifier(DevicePlusBackgroundStyle(isSelected: isSelected))
+                        .frame(width: 45, height: 70)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 18)
+                                .stroke(Color(hex: "#1E2A38"), lineWidth: 2)
+                        )
                     Text("+")
                         .modifier(DevicePlusTextStyle(isSelected: isSelected))
+                        .font(.system(size: 22, weight: .bold))
                 }
             }
             .buttonStyle(PlainButtonStyle())
