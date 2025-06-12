@@ -28,14 +28,6 @@ body {
     animation: breatheBackground 2.5s ease-in-out infinite;
 }
 
-.moon {
-    height: 90px;
-    width: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 /* @keyframes breatheBackground {
     0%, 100% {
         background-size: 100% 100%; 
@@ -51,28 +43,6 @@ body {
     }
 } */
 
-.continue_container {
-    display: flex;
-    margin-bottom: 2rem;
-    margin-top: auto; 
-    justify-content: center;
-}
-
-.continue_class {
-    text-align: center;
-    color: #A0A3B4;
-    background-color: #2F2F37;
-    padding: 1rem 8rem 1rem 8rem;
-    border-radius: 4rem;
-    border: none;
-    font-family: 'Sora', sans-serif;
-}
-
-.continue_container button:hover {
-    background-color: #7C6FF0;
-    color: white;
-}
-
 .main_content {
     display: flex;
     flex-direction: column;
@@ -83,10 +53,14 @@ body {
 /* OTHER STUFF */
 
 .header {
+    position: sticky;
+    top: 0;
+    background-color: #1E2A38;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 2rem 0rem 1.5rem 0rem;
+    padding: 2rem 0rem 1.5rem 0rem;
 }
 
 #settings {
@@ -97,10 +71,10 @@ body {
     margin-right: 2rem;
 }
 
-#line_break {
-    border-bottom: #F5F7FA1A solid 0.1em;
+.line_break {
+    border-bottom: rgb(41, 48, 53) solid 0.2rem;
     width: 100%;
-    margin-top: -0.5rem;
+    margin: 0 auto;
 }
 
 #button_container {
@@ -143,4 +117,45 @@ body {
     margin-top: 1.2rem;
     color: #F5F6F8;
     font-weight: 400;
+}
+
+.delete p {
+    color: rgb(255, 49, 49);
+}
+
+.main_icons {
+    margin: 0;
+    padding: 0;
+}
+
+.icon_text {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* FOOTER STUFF */
+
+.footer_col {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: none;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem;
+}
+
+.static {
+    color: #76778C;
+}
+
+.lb_two {
+    margin-top: 1.5rem;
 }
