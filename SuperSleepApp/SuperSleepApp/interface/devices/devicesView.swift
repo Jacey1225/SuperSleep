@@ -1,4 +1,52 @@
 import SwiftUI
+import HealthKit
+
+class HealthDataManager: ObservableObject {
+    private let healthStore = HKHealthStore()
+    @Published var heartRate: Double?
+    @Published var dailySteps: Int?
+
+    func requestAuthorizationAndFetchData() {
+        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        let stepCountType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let typesToRead: Set = [heartRateType, stepCountType]
+
+        healthStore.requestAuthorization(toShare: [], read: typesToRead) { [weak self] success, error in
+            guard success else { return }
+            self?.fetchLatestHeartRate()
+            self?.fetchTodaySteps()
+        }
+    }
+
+    private func fetchLatestHeartRate() {
+        let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)!
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let query = HKSampleQuery(sampleType: heartRateType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor]) { [weak self] _, samples, _ in
+            if let sample = samples?.first as? HKQuantitySample {
+                let value = sample.quantity.doubleValue(for: HKUnit(from: "count/min"))
+                DispatchQueue.main.async {
+                    self?.heartRate = value
+                }
+            }
+        }
+        healthStore.execute(query)
+    }
+
+    private func fetchTodaySteps() {
+        let stepType = HKQuantityType.quantityType(forIdentifier: .stepCount)!
+        let startOfDay = Calendar.current.startOfDay(for: Date())
+        let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
+        let query = HKStatisticsQuery(quantityType: stepType, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, _ in
+            if let sum = result?.sumQuantity() {
+                let steps = Int(sum.doubleValue(for: HKUnit.count()))
+                DispatchQueue.main.async {
+                    self?.dailySteps = steps
+                }
+            }
+        }
+        healthStore.execute(query)
+    }
+}
 
 struct Device: Identifiable {
     let id = UUID()
@@ -9,6 +57,7 @@ struct Device: Identifiable {
 }
 
 struct DevicesView: View {
+    @StateObject private var healthDataManager = HealthDataManager()
     @State private var devices = [
         Device(imageName: "successfitbit", title: "Fitbit", description: "Automatically sync your steps, workouts, and sleep."),
         Device(imageName: "successheart", title: "Google Fit", description: "Track and sync your fitness and sleep data effortlessly."),
@@ -38,6 +87,10 @@ struct DevicesView: View {
                         onToggle: {
                             devices[idx].isSelected.toggle()
                             canContinue = devices.contains(where: { $0.isSelected })
+                            // Only request HealthKit for Apple Health
+                            if devices[idx].title == "Apple Health" && devices[idx].isSelected {
+                                healthDataManager.requestAuthorizationAndFetchData()
+                            }
                         }
                     )
                 }
@@ -70,6 +123,18 @@ struct DevicesView: View {
                 }
                 .background(Color.clear)
             }
+            // For demonstration, show the fetched values:
+            VStack {
+                if let hr = healthDataManager.heartRate {
+                    Text("Latest Heart Rate: \(Int(hr)) bpm")
+                        .foregroundColor(.white)
+                }
+                if let steps = healthDataManager.dailySteps {
+                    Text("Today's Steps: \(steps)")
+                        .foregroundColor(.white)
+                }
+            }
+            .padding(.top, 40)
         }
     }
 }
