@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Two Page</title>
+    <link rel="stylesheet" href="basic_two.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="breathing"></div>
+    <div class="main_content">
+        <p id="complete">Complete your basic information</p>
+        
+        <div id="top">
+            <p>We found some data that can 
+                help you get started faster
+            </p>
+            <div id="data_container">
+                <button id="use_device">Use this data</button>
+            </div>
+        </div>
+
+        <div class="main_containers">
+            
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">Daily Physical Activity</p>
+                </div>
+                <details class="css-dropdown right_side">
+                    <summary>
+                        <span class="selected-option choice">Gender</span>
+                        <span class="arrow">&#9662;</span>
+                    </summary>
+                    <ul class="dropdown-list">
+                        <li><input type="radio" name="option" id="opt1"><label for="opt1">Male</label></li>
+                        <li><input type="radio" name="option" id="opt2"><label for="opt2">Female</label></li>
+                        <li><input type="radio" name="option" id="opt3"><label for="opt3">Prefer not to say</label></li>
+                    </ul>
+                </details>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
