@@ -30,7 +30,7 @@
                 </div>
                 <details class="css-dropdown right_side">
                     <summary>
-                        <span class="selected-option choice">Gender</span>
+                        <span class="selected-option choice">Daily physical activity level</span>
                         <span class="arrow">&#9662;</span>
                     </summary>
                     <ul class="dropdown-list">
@@ -40,7 +40,77 @@
                     </ul>
                 </details>
             </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">What time do you usually go to bed?</p>
+                </div>
+                <div class="input_con">
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                    <p id="input_division">:</p>
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                </div>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">What time do you usually wake up?</p>
+                </div>
+                <div class="input_con">
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                    <p id="input_division">:</p>
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                </div>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">Estimated Stress Level</p>
+                </div>
+                <div class="slider_contain">
+                    <div class="slider-container">
+                        <input type="range" min="0" max="2" step="1" value="1" id="range" />
+                        <div class="label" id="range-label">Medium</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">Daily Physical Activity</p>
+                </div>
+                <div class="button_contain">
+                    <button class="disorders">Yes</button>
+                    <button class="disorders">No</button>
+                </div>
+            </div>
+
         </div>
     </div>
+    <script>
+    const range = document.getElementById("range");
+    const label = document.getElementById("range-label");
+    const values = ["Low", "Medium", "High"];
+
+    function updateLabelAndTrack() {
+      const val = parseInt(range.value, 10);
+      label.textContent = values[val];
+
+      const percent = (val / 2) * 100;
+
+      range.style.background = `linear-gradient(to right, #00A492 ${percent}%, rgba(43, 70, 100, 0.4) ${percent}%)`;
+    }
+
+    range.addEventListener("input", updateLabelAndTrack);
+    updateLabelAndTrack(); // Set initial state on page load
+  </script>
 </body>
 </html>

@@ -1,22 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="test.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic Range Label</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .slider-container {
+      width: 300px;
+      margin: auto;
+      position: relative;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      background: #ccc;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      background: #007BFF;
+      cursor: pointer;
+      margin-top: -6px;
+    }
+
+    .label {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      height: 24px;
+    }
+  </style>
 </head>
 <body>
-    <details class="css-dropdown">
-        <summary>
-            <span class="selected-option">Select a size</span>
-            <span class="arrow">&#9662;</span>
-        </summary>
-        <ul class="dropdown-list">
-            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
-            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
-            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
-        </ul>
-    </details>
+  <div class="slider-container">
+    <input type="range" min="0" max="2" step="1" value="1" id="range" />
+    <div class="label" id="range-label">Medium</div>
+  </div>
+
+  <script>
+    const range = document.getElementById("range");
+    const label = document.getElementById("range-label");
+
+    const values = ["Low", "Medium", "High"];
+
+    function updateLabel() {
+      label.textContent = values[range.value];
+    }
+
+    range.addEventListener("input", updateLabel);
+
+    // Initial set (in case value is changed elsewhere)
+    updateLabel();
+  </script>
 </body>
 </html>
