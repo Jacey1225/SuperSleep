@@ -62,7 +62,7 @@ body {
 .continue_container {
     display: flex;
     margin-bottom: 2rem;
-    margin-top: auto; 
+    margin: 0; 
     justify-content: center;
 }
 
@@ -198,6 +198,10 @@ input::placeholder {
     display: flex;
     justify-content: space-between;
     gap: 0.2rem;
+}
+
+.no {
+    margin-right: auto;
 }
 
 /* DROPDOWN STUFF */
