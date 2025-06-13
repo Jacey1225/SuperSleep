@@ -1,0 +1,205 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Sora', sans-serif;
+}
+
+.breathing {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #1E2A38;
+    background-repeat: no-repeat;
+    background-size: 150% 150%;
+    background-position: center center; 
+    animation: breatheBackground 2.5s ease-in-out infinite;
+}
+
+/* @keyframes breatheBackground {
+    0%, 100% {
+        background-size: 100% 100%; 
+        opacity: 1;
+    }
+    35% {
+        background-size: 105% 105%;
+        opacity: 0.95;
+    }
+    70% {
+        background-size: 135% 135%;
+        opacity: 0.95;
+    }
+} */
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: auto;
+    margin-top: 1rem;
+}
+
+/* OTHER STUFF */
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #1E2A38;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0rem 1rem 0rem;
+}
+
+#settings {
+    margin-left: 2rem;
+}
+
+#profile {
+    margin-right: 2rem;
+}
+
+.line_break {
+    border-bottom: rgb(41, 48, 53) solid 0.2rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#button_container {
+    display: flex;
+    margin: 0 auto;
+}
+
+.john,
+.gray {
+    background-color: rgba(43, 61, 79, 0.4);
+    border: none;
+    padding: 1rem;
+    display: flex;
+    width: 22rem;
+    justify-content: space-between;
+}
+
+#jj {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+#arrow {
+    float: right;
+}
+
+/* MAIN STUFF */
+
+.hi {
+    font-size: 1.3em;
+}
+
+.top_head {
+    margin-left: 1rem;
+    line-height: 2rem;
+}
+
+.subtitle_summary {
+    color: #A5BED4;
+}
+
+#sleep_quality {
+    opacity: 60%;
+    text-align: center;
+}
+
+.reminder_title {
+    margin: 2.5rem 1rem 1rem 1rem;
+    font-size: 1em;
+    color: #A5BED4;
+}
+
+.micro_habit {
+    display: flex;
+    justify-content: space-between;
+}
+
+.five {
+    display: flex;
+    justify-content: space-between;
+    border: #5280A5 solid 0.1rem;
+    margin: 0 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.five p {
+    opacity: 60%;
+}
+
+.five button {
+    padding: 0.3rem 0.7rem;
+    border-radius: 3rem;
+    border: none;
+}
+
+.friends {
+    display: flex;
+    opacity: 60%;
+    justify-content: space-between;
+    margin: 0 1rem;
+    background-color: rgba(43, 61, 79, 0.4);
+}
+
+.rachel {
+    margin-right: auto;
+    margin-left: 0.5rem;
+}
+
+/* FOOTER STUFF */
+
+.footer_col {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: none;
+    line-height: 1.3rem;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    padding-top: 0.5rem;
+    position: sticky;
+    bottom: 0;
+    background-color: #1E2A38;
+    z-index: 1;
+}
+
+.static {
+    color: #76778C;
+}
+
+.lb_two {
+    margin-top: 1.5rem;
+}
+
+.settings_image {
+    color: #A6ABFB;
+}
+
+.settings_button {
+    color: #A6ABFB;
+}
