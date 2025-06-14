@@ -8,6 +8,7 @@ import numpy as np
 from advice.compare import CompareSleep
 from datetime import datetime
 from src.advice.geminiAPI import PromptPlan
+from src.dashboard.groups import CreateGroup
 import pandas as pd
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -174,13 +175,80 @@ async def micro_habits(username: str):
             return {"message": "No critical factors found for the user."}
 
         prompt = PromptPlan(user_data, critical_factors, goal, growth_rate)
-        micro_habits = prompt.generate_advice()
+        advice = prompt.generate_advice()
+        micro_habits = prompt.save_habits(advice)
         logger.info(f"Generated micro habits for user {username}: {micro_habits}")
         return {"micro_habits": micro_habits}
     except Exception as e:
         logger.error(f"Error generating micro habits for user {username}: {e}")
         return {"error": str(e)}
+
+# MARK: Group Functions
+@app.get('/create-group')
+async def create_group(username: str):
+    group_creator = CreateGroup(username)
+    try:
+        group_creator.create_group()
+        return {"message": "Group created successfully."}
+    except Exception as e:
+        logger.error(f"Error creating group for user {username}: {e}")
+        return {"error": str(e)}
+    
+@app.get('/invite-to-group')
+async def invite_to_group(username: str, invite_user: str):
+    group_member = CreateGroup(username)
+    try:
+        group_member.invite_to_group(invite_user)
+        return {"message": f"User {invite_user} invited to group {username}'s group."}
+    except Exception as e:
+        logger.error(f"Error inviting user {invite_user} to group {username}: {e}")
+        return {"error": str(e)}
     
 @app.get('/top-friends')
 async def top_friends(username: str):
-    return
+    group_creator = CreateGroup(username)
+    group_stats = group_creator.get_group_info(username)
+    if group_stats:
+        leaderboard = group_creator.leaderboard(group_stats)
+        return {"leaderboard": leaderboard[:3]}
+    else:
+        logger.error(f"No group stats found for user {username}.")
+        return {"error": "No group stats found for the specified user."}
+
+@app.get('/leave-group')
+async def leave_group(username: str):
+    group_member = CreateGroup(username)
+    try:
+        group_member.leave_group(username)
+        return {"message": f"User {username} has left the group."}
+    except Exception as e:
+        logger.error(f"Error leaving group for user {username}: {e}")
+        return {"error": str(e)}
+    
+ # MARK: Daily Reset
+@app.get('/new-data')
+async def new_data(username: str, sleep_duration: int, wake_time:str, sleep_time: str, activity: str, stress: int):
+    select_values = ["age", "gender", "weight", "height", "bmi", "disorders", "goal", "growth_rate", "group_id"]
+    where_values = ["username"]
+    values = [username]
+    user_data = db.select_items(select_values, where_values, values)[0]
+    if not user_data:
+        logger.error(f"No user data found for {username}.")
+        return {"error": "No user data found for the specified user."}
+        
+    where_values = ["username", "height", "weight", "age", "gender", 
+                    "day", "sleep_duration", "bedtime", "waketime", "activity", "stress",
+                    "bmi", "disorders", "goal", "growth_rate", "group_id"]
+    values = [username, user_data[3], user_data[2], user_data[0], user_data[1], 
+                datetime.now().strftime("%A"), sleep_duration, sleep_time, wake_time, activity, stress,
+                user_data[4], user_data[5], user_data[6], user_data[7], user_data[8]]
+    try:
+        db.insert_items(where_values, values)
+        logger.info(f"Inserted new daily data for user {username}.")
+    except Exception as e:
+        logger.error(f"Error inserting new daily data for user {username}: {e}")
+        return {"error": str(e)}
+    return {"message": "New daily data inserted successfully."}
+
+
+
