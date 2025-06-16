@@ -10,6 +10,7 @@ from datetime import datetime
 from src.advice.geminiAPI import PromptPlan
 from src.dashboard.groups import CreateGroup
 import pandas as pd
+import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -182,8 +183,52 @@ async def micro_habits(username: str):
     except Exception as e:
         logger.error(f"Error generating micro habits for user {username}: {e}")
         return {"error": str(e)}
+    
+@app.get('/add-habit')
+async def add_habit(username: str, habit: str):
+    try:
+        select_value = ["habits"]
+        where_values = ["username"]
+        values = [username]
+        current_habits = db.select_items(select_value, where_values, values)[0][0]
+        if isinstance(current_habits, list):
+            current_habits.append(habit)
 
-# MARK: Group Functions
+        values_to_update = ["habits"]
+        where_values = ["username"]
+        values = [current_habits, username]
+        db.update_items(values_to_update, where_values, values)
+        logger.info(f"Added habit '{habit}' for user {username}.")
+        return {"message": f"Habit '{habit}' added successfully for user {username}."}
+    
+    except Exception as e:
+        logger.error(f"Error adding habit for user {username}: {e}")
+        return {"error": str(e)}
+    
+@app.get('/add-completion')
+async def add_completion(username: str, habit: str):
+    try:
+        select_value = ["habits"]
+        where_values = ["username"]
+        values = [username]
+        current_habits = db.select_items(select_value, where_values, values)[0]
+
+        habit_to_update = current_habits[habit]
+        habit_to_update[0] += 1
+        current_habits[habit] = habit_to_update
+
+        values_to_update = ["habits"]
+        where_values = ["username"]
+        values = [current_habits, username]
+        db.update_items(values_to_update, where_values, values)
+        logger.info(f"Added completion for habit '{habit}' for user {username}.")
+
+        return {"message": f"Completion for habit '{habit}' added successfully for user {username}."}
+    except Exception as e:
+        logger.error(f"Error adding completion for habit '{habit}' for user {username}: {e}")
+        return {"error": str(e)}
+        
+# MARK: Group Functions 
 @app.get('/create-group')
 async def create_group(username: str):
     group_creator = CreateGroup(username)
