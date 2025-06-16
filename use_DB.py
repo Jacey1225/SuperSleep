@@ -40,7 +40,6 @@ class DBConnection:
         if self.connection.is_connected():
             self.cursor.close()
             self.connection.close()
-            logger.info("MySQL connection is closed")
     
     def open(self):
         """
@@ -57,7 +56,6 @@ class DBConnection:
         try:
             self.connection = mysql.connector.connect(**self.db_config)
             self.cursor = self.connection.cursor()
-            logger.info("MySQL connection is opened")
         except Error as e:
             logger.error("Error while connecting to MySQL", e)
 
@@ -75,7 +73,6 @@ class DBConnection:
         wheres = " AND ".join(f"{where} = %s" for where in where_values)
         try:
             # Pass the correct arguments to find (list, list)
-            logger.info(f"Found {self.table} with values: {values}")
             select_query = f"""
                 SELECT {select_value} 
                 FROM {self.table}
@@ -83,7 +80,6 @@ class DBConnection:
                 {limit_clause}"""
             query_values = values
 
-            logger.info(f"Select query: {select_query} with values: {query_values}")
             self.cursor.execute(select_query, query_values)
             rows = self.cursor.fetchall()
             self.close()
@@ -173,4 +169,33 @@ class DBConnection:
             self.connection.rollback()
         
         self.close()
+
+    def delete_items(self, where_values, values):
+        """
+        Deletes records from the table based on the specified conditions.
+
+        Args:
+            where_values (list): List of column names to use in the WHERE clause.
+            values (list): List of values corresponding to the columns in where_values.
+
+        Raises:
+            ValueError: If input types are not as expected.
+            Error: If an error occurs during the database operation.
+        """
+        self.open()
+
+        if not isinstance(where_values, list) or not isinstance(values, list):
+            raise ValueError("Invalid input types. Expected lists for where_values and values.")
+
+        wheres = " AND ".join(f"{col} = %s" for col in where_values)
+        try:
+            delete_query = f"DELETE FROM {self.table} WHERE {wheres};"
+            logger.info(f"Delete query: {delete_query} with values: {values}")
+            self.cursor.execute(delete_query, values)
+            self.connection.commit()
+        except Error as e:
+            logger.error(f"Error deleting items: {e}")
+            self.connection.rollback()
+        self.close()
+
     

@@ -20,8 +20,8 @@ class PromptPlan:
         "Your mission is to help people build up their lifestyle by changing their daily habits incrementally. This user's current" \
         "lifestyle is: "
         self.username = username
-        self.user_stats = user_stats + "."
-        self.critical_factors = "According to sleep quality records, the user lacks in: " + critical_factors
+        self.user_stats = str(user_stats) + "."
+        self.critical_factors = "According to sleep quality records, the user lacks in: " + str(critical_factors)
         self.plan = f"Given this information, can you give the user some daily changes to gradually commit to over {progress_speed} that will help them raise their sleep quality and achieve their goal? "
         self.format = "Format and limit your response only as a dictionary and include it with the following information: " \
         "habit to change with the intention of improving the factor of concern: [current progress throughout the week (auto set to zero), " \
@@ -32,7 +32,6 @@ class PromptPlan:
 
     def generate_advice(self):
         prompt = self.default_prompt + self.user_stats + self.critical_factors + self.plan + self.format
-        logger.info(f"Generated prompt: {prompt}")
         response = self.model.generate_content(prompt)
         cleaned = response.text.strip()
         if cleaned.startswith("```json"):
@@ -47,16 +46,13 @@ class PromptPlan:
         return json.loads(cleaned)
 
     def save_habits(self, advice: dict): 
-        micro_habits = [habit for _, habit in advice.items()]
-        logger.info(f"Micro habits to save: {micro_habits}")
-
         values_to_update = ["habits"]
         where_values = ["username"]
-        values = [micro_habits, self.username]
+        values = [json.dumps(advice), self.username]
         try:
             self.db.update_items(values_to_update, where_values, values)
             logger.info("Habits saved successfully.")
-            return micro_habits
+            return advice
         except Exception as e:
             logger.error(f"Error saving habits: {e}")
             raise e

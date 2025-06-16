@@ -10,7 +10,6 @@ from datetime import datetime
 from src.advice.geminiAPI import PromptPlan
 from src.dashboard.groups import CreateGroup
 import pandas as pd
-import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -51,11 +50,15 @@ def process_bmi(height, weight): #pounds and inches
     
 # MARK: Target Function ^
 @app.get('/basic-info')
-async def basic_info(uuid: str, name: str, age: int, gender: str, weight: int, height: int):
+async def basic_info(uuid: str, username: str, age: int, gender: str, weight: int, height: int):
     bmi = process_bmi(height, weight)
+    if username in db.select_items(["username"], ["username"], [username]):
+        logger.warning(f"Username {username} already exists in the database.")
+        return {"error": "Username already exists."}
+    
     where_values = ["uuid", "day"]
     values_to_update = ["username", "age", "gender", "weight", "height", "bmi"]
-    values = [uuid, datetime.now().strftime("%A"), name, age, gender, weight, height, bmi] 
+    values = [uuid, datetime.now().strftime("%A"), username, age, gender, weight, height, bmi] 
     try:
         db.update_items(where_values, values_to_update, values, uuid)
         logger.info(f"Updated basic info for user {uuid} in database.")
@@ -112,17 +115,17 @@ async def fetch_data(uuid: str):
 # MARK: Sleep Quality
     normalize = Normalize(data_df)
     normalize.not_digit()
-    normalize.adjust_outliers()
+    normalize.adjust_outliers_on_input()
     user_data_normalized = normalize.data
-    nn.forward(user_data_normalized)
+    nn.predict(user_data_normalized)
     predicted_sleep = nn.pred_value[0]
     logger.info(f"Predicted sleep quality: {predicted_sleep}")
     db.update_items(
-        ["predicted_sleep_quality"], 
+        ["sleep_quality"], 
         ["username", "day"], 
         [predicted_sleep, uuid, datetime.now().strftime("%A")]
     )
-    return {"predicted_sleep_quality": predicted_sleep}
+    return {"sleep_quality": predicted_sleep}
 
 @app.get('/sleep-percentage')
 async def sleep_percentage(username: str):
@@ -134,14 +137,14 @@ async def sleep_percentage(username: str):
         logger.error(f"No data found for user {username}.")
         return {"error": "No data found for the specified user."}
 
-    sleep_percentage = sleep_quality * 100
+    normalizer = Normalize()
+    sleep_percentage = normalizer.decode_label(sleep_quality)
     logger.info(f"Sleep quality percentage for user {username}: {sleep_percentage}%")
     return {"sleep_quality_percentage": sleep_percentage}
 
-# MARK: Micro Habits
-
+# MARK: Micro Habits    
 def compare_sleep(username):
-    select_value = ["*"]
+    select_value = "*"
     where_values = ["username"]
     values = [username]
     user_data = db.select_items(select_value, where_values, values)[0]
@@ -150,32 +153,37 @@ def compare_sleep(username):
         logger.error(f"No data found for user {username}.")
         return {"error": "No data found for the specified user."}
     
-    sleep_quality = user_data[7]
     factors = {
-        "Sleep Duration": user_data[5],
-        "Steps": user_data[15],
+        "Sleep Duration": user_data[18],
+        "Steps": user_data[10],
         "Physical Activity": user_data[11],
-        "Heart Rate": user_data[9],
+        "Heart Rate": user_data[15],
         "BMI Category": user_data[14],
         "Stress Level": user_data[13],
+        "Sleep Disorders": user_data[12],
+        "Sleep Quality": user_data[7]
     }
 
-    compare = CompareSleep(factors, sleep_quality)
+
+    logger.info(f"Factors for user {username}: {factors}, Sleep Quality: {factors['Sleep Quality']}")
+    compare = CompareSleep(factors)
     critical_factors = compare.compare_stats()
-    logger.info(f"Critical factors affecting sleep for user {username}: {critical_factors}")
     return critical_factors
 
 @app.get('/micro-habits')
 async def micro_habits(username: str):
     try:
-        user_data = db.select_items(["*"], ["username"], [username])
-        goal = db.select_items(["goal"], ["username"], [username])[0][0]
-        growth_rate = db.select_items(["growth_rate"], ["username"], [username])[0][0]
+        user_data = db.select_items("*", ["username"], [username])
+        goal = db.select_items("goal", ["username"], [username])[0][0]
+        growth_rate = db.select_items("growth_rate", ["username"], [username])[0][0]
+        logger.info(f"User data for {username}: {user_data}, Goal: {goal}, Growth Rate: {growth_rate}")
+
         critical_factors = compare_sleep(username)
         if not critical_factors:
             return {"message": "No critical factors found for the user."}
 
-        prompt = PromptPlan(user_data, critical_factors, goal, growth_rate)
+        logger.info(f"Data for Gemini API: {user_data}, Critical Factors: {critical_factors}, Goal: {goal}, Growth Rate: {growth_rate}")
+        prompt = PromptPlan(username, user_data, critical_factors, goal, growth_rate)
         advice = prompt.generate_advice()
         micro_habits = prompt.save_habits(advice)
         logger.info(f"Generated micro habits for user {username}: {micro_habits}")
@@ -187,7 +195,7 @@ async def micro_habits(username: str):
 @app.get('/add-habit')
 async def add_habit(username: str, habit: str):
     try:
-        select_value = ["habits"]
+        select_value = "habits"
         where_values = ["username"]
         values = [username]
         current_habits = db.select_items(select_value, where_values, values)[0][0]
@@ -208,7 +216,7 @@ async def add_habit(username: str, habit: str):
 @app.get('/add-completion')
 async def add_completion(username: str, habit: str):
     try:
-        select_value = ["habits"]
+        select_value = "habits"
         where_values = ["username"]
         values = [username]
         current_habits = db.select_items(select_value, where_values, values)[0]
@@ -295,5 +303,19 @@ async def new_data(username: str, sleep_duration: int, wake_time:str, sleep_time
         return {"error": str(e)}
     return {"message": "New daily data inserted successfully."}
 
+# MARK: Weekly Progress
+@app.get('/weekly-progress')
+async def weekly_progress(username: str):
+    select_value = ["sleep_quality"]
+    where_values = ["username"]
+    values = [username]
+    fetchAmount = 7
+    weekly_data = db.select_items(select_value, where_values, values, fetchAmount)
 
-
+    if not weekly_data:
+        logger.error(f"No weekly data found for user {username}.")
+        return {"error": "No weekly data found for the specified user."}
+    
+    weekly_progress = [data[0] for data in weekly_data]
+    logger.info(f"Weekly progress for user {username}: {weekly_progress}")
+    return {"weekly_progress": weekly_progress}
