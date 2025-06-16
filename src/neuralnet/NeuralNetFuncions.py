@@ -102,12 +102,6 @@ class Normalize:
             )
             logger.info("Dietary Habits normalized to 0, 1, 2")
 
-        if self.data["Physical Activity Level"].apply(lambda x: isinstance(x, str)).any():
-            self.data["Physical Activity Level"] = self.data["Physical Activity Level"].replace(
-                {"low": 0, "medium": 1, "high": 2}
-            )
-            logger.info("Physical Activity Level normalized to 0, 1, 2")
-
         return self.data
     
     def time_to_float(self, time_str):

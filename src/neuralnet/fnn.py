@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 import logging
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.neuralnet.NeuralNetFuncions import Gradient, Loss, Activations, Normalize
 
 logging.basicConfig(level=logging.INFO)
@@ -120,6 +124,8 @@ class FNN:
     
     def predict(self, row_input):
         self.forward(row_input)
+
+        logger.info(f"Predicted Sleep Performance: {self.pred_value[0]}")
         return self.pred_value
 
 # MARK: Training
@@ -183,7 +189,7 @@ class TrainData:
                feed.hidden_layer2.weights, feed.hidden_layer2.biases, \
                feed.output_layer.weights, feed.output_layer.biases        
 
-    def save_weights(self, weights, biases, filename="data/weights(2).npz"):
+    def save_weights(self, weights, biases, filename="data/weights(no_device).npz"):
         np.savez(filename, 
                  input_weights=weights[0], input_biases=biases[0],
                  hidden1_weights=weights[1], hidden1_biases=biases[1],
@@ -192,7 +198,7 @@ class TrainData:
 
 # MARK: Testing
 class TestData:
-    def __init__(self,  test_frac=0.2, data_file="data/weights(2).npz", test_file="data/Sleep_Stats(2).csv"):
+    def __init__(self,  test_frac=0.2, data_file="data/weights(no_device).npz", test_file="data/Sleep_Stats(2).csv"):
         self.data_file = data_file
         self.test_file = test_file
 
@@ -227,6 +233,8 @@ class TestData:
         self.test_size = int(len(self.test_data) * test_frac)
         self.test_features = self.test_data[self.test_size:].drop(columns=["User ID", "Sleep Quality", "Heart Rate", "Daily Steps"])
         self.test_labels = self.test_data["Sleep Quality"].values[self.test_size:]
+
+        self.correct_outputs = 0
     
     def test_model(self):
         for i, (index, row) in enumerate(self.test_features.iterrows()):
@@ -245,11 +253,17 @@ class TestData:
             prediction = (pred_value * (self.Y_Max - self.Y_Min)) + self.Y_Min
             true_value = (label * (self.Y_Max - self.Y_Min)) + self.Y_Min
             logger.info(f"Predicted Value: {pred_value}: Normalized: {np.round(prediction)} -> True Value: {true_value}")
+            if abs(true_value - prediction) < 1:
+                self.correct_outputs += 1
+
+        accuracy = (self.correct_outputs / len(self.test_features)) * 100
+        logger.info(f"Testing completed. Correct Outputs: {self.correct_outputs}, Total: {len(self.test_features)}, Accuracy: {accuracy:.2f}%")
+
 
 # MARK: Main Execution
 if __name__ == "__main__":
     # Create a TrainData instance
-    trainer = TrainData(epochs=100)
+    trainer = TrainData(epochs=1000)
     logger.info("Starting training process...")
 
     # Train the model and get the weights and biases
@@ -261,7 +275,7 @@ if __name__ == "__main__":
     biases = weights_and_biases[1::2]
 
     # Save the trained weights and biases
-    trainer.save_weights(weights, biases, filename="data/weights(2).npz")
+    trainer.save_weights(weights, biases, filename="data/weights(no_device).npz")
 
     tester = TestData()
     logger.info("Starting testing process...")

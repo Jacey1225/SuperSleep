@@ -34,9 +34,17 @@ class PromptPlan:
         prompt = self.default_prompt + self.user_stats + self.critical_factors + self.plan + self.format
         logger.info(f"Generated prompt: {prompt}")
         response = self.model.generate_content(prompt)
-        logger.info(f"Response from Gemini: {response.text}")
+        cleaned = response.text.strip()
+        if cleaned.startswith("```json"):
+            cleaned = cleaned.removeprefix("```json").strip()
+        if cleaned.startswith("```"):
+            cleaned = cleaned.removeprefix("```").strip()
+        if cleaned.endswith("```"):
+            cleaned = cleaned.removesuffix("```").strip()
 
-        return json.loads(response.text)
+        logger.info(f"Response from Gemini: {cleaned}")
+
+        return json.loads(cleaned)
 
     def save_habits(self, advice: dict): 
         micro_habits = [habit for _, habit in advice.items()]
