@@ -11,6 +11,8 @@ from src.advice.geminiAPI import PromptPlan
 from src.dashboard.groups import CreateGroup
 import pandas as pd
 
+#uvicorn app:app --reload
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -46,7 +48,7 @@ def process_bmi(height, weight): #pounds and inches
     elif bmi >= 30:
         return "Obese"
     else:
-        return "Normal"
+        return "Normal"    
     
 # MARK: Target Function ^
 @app.get('/basic-info')

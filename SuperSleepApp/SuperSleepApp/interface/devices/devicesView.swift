@@ -71,17 +71,17 @@ struct DevicesView: View {
                 .background(Color.clear)
             }
             // For demonstration, show the fetched values:
-            VStack {
-                if let hr = healthDataManager.heartRate {
-                    Text("Latest Heart Rate: \(Int(hr)) bpm")
-                        .foregroundColor(.white)
-                }
-                if let steps = healthDataManager.dailySteps {
-                    Text("Today's Steps: \(steps)")
-                        .foregroundColor(.white)
-                }
-            }
-            .padding(.top, 40)
+            // VStack {
+            //    if let hr = healthDataManager.heartRate {
+            //        Text("Latest Heart Rate: \(Int(hr)) bpm")
+            //            .foregroundColor(.white)
+            //    }
+            //    if let steps = healthDataManager.dailySteps {
+            //        Text("Today's Steps: \(steps)")
+            //            .foregroundColor(.white)
+            //    }
+            //}
+            //.padding(.top, 40)
         }
     }
 }
