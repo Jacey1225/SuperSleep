@@ -52,7 +52,7 @@ def process_bmi(height, weight): #pounds and inches
 @app.get('/basic-info')
 async def basic_info(uuid: str, username: str, age: int, gender: str, weight: int, height: int):
     bmi = process_bmi(height, weight)
-    if username in db.select_items(["username"], ["username"], [username]):
+    if username in db.select_items("username", ["username"], [username]):
         logger.warning(f"Username {username} already exists in the database.")
         return {"error": "Username already exists."}
     
@@ -93,10 +93,11 @@ async def fetch_data(uuid: str):
     output_weights = adjustments['output_weights']
     output_biases = adjustments['output_biases']
 
-    select_value = ["gender", "age", "sleep_duration", "activity_level", "stress", "bmi", "h_rate", "steps", "disorders"]
+    select_value = "*"
     where_values = ["uuid", "day"]
     values = [uuid, datetime.now().strftime("%A")]
-    user_data = db.select_items(select_value, where_values, values)[0]
+    response = db.select_items(select_value, where_values, values)[0]
+    user_data = [response[5], response[4], response[19], response[12], response[14], response[15], response[16], response[11], response[13]]
     data_df = pd.DataFrame(user_data, columns=["Gender", "Age", "Sleep Duration", "Physical Activity Level", 
                                                "Stress Level", "BMI Category", "Heart Rate", "Daily Steps", 
                                                "Sleep Disorders"])
@@ -258,14 +259,15 @@ async def invite_to_group(username: str, invite_user: str):
         return {"error": str(e)}
     
 @app.get('/top-friends')
-async def top_friends(username: str):
-    group_creator = CreateGroup(username)
-    group_stats = group_creator.get_group_info(username)
+async def top_friends(group_id: str):
+    group_creator = CreateGroup()
+    group_stats = group_creator.get_group_info(group_id)
     if group_stats:
         leaderboard = group_creator.leaderboard(group_stats)
+        logger.info(f"Leaderboard for group {group_id}: {leaderboard}")
         return {"leaderboard": leaderboard[:3]}
     else:
-        logger.error(f"No group stats found for user {username}.")
+        logger.error(f"No group stats found for group {group_id}.")
         return {"error": "No group stats found for the specified user."}
 
 @app.get('/leave-group')
@@ -306,16 +308,18 @@ async def new_data(username: str, sleep_duration: int, wake_time:str, sleep_time
 # MARK: Weekly Progress
 @app.get('/weekly-progress')
 async def weekly_progress(username: str):
-    select_value = ["sleep_quality"]
+    select_value = "*"
     where_values = ["username"]
     values = [username]
     fetchAmount = 7
-    weekly_data = db.select_items(select_value, where_values, values, fetchAmount)
+    weekly_data = db.select_items(select_value, where_values, values, fetchAmount=fetchAmount)
 
     if not weekly_data:
         logger.error(f"No weekly data found for user {username}.")
         return {"error": "No weekly data found for the specified user."}
-    
-    weekly_progress = [data[0] for data in weekly_data]
-    logger.info(f"Weekly progress for user {username}: {weekly_progress}")
-    return {"weekly_progress": weekly_progress}
+    weekly_data = [[data[6], data[7]] for data in weekly_data]
+
+    week_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    weekly_data = sorted(weekly_data, key=lambda x: week_order.index(x[0]))
+    logger.info(f"Weekly progress for user {username}: {weekly_data}")
+    return {"weekly_progress": weekly_data}
