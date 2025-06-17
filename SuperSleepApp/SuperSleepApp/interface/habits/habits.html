@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habits Page</title>
+    <link rel="stylesheet" href="habits.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="breathing"></div>
+    <div class="header">
+        <p id="settings"> < &nbsp; Settings </p>
+        <img id="profile" src="sprofile.svg">
+    </div>
+    <div class="line_break"></div>
+    <div class="main_content">
+        <div class="sub_header">
+            <p id="title">Your Habits</p>
+            <p id="small">Small changes, big results</p>
+        </div>
+        <div class="progress_today">
+            <div class="progress-container">
+                <svg class="progress-svg" viewBox="0 0 150 150">
+                    <defs>
+                    <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#563AC8" />
+                        <stop offset="20%" stop-color="#563AC8" />
+                        <stop offset="50%" stop-color="#5280A5" />
+                        <stop offset="100%" stop-color="#5280A5" />
+                    </linearGradient>
+                    </defs>
+
+                    <circle class="progress-circle-bg" r="65" cx="75" cy="75" />
+                    <circle class="progress-circle" r="60" cx="75" cy="75" fill="#2F2F37"/>
+                </svg>
+                <div class="progress-text" id="progress-text">0%</div>
+            </div>
+        </div>
+        <div class="third_title">
+            <p id="prog">Your progress today</p>
+        </div>
+        <div class="choices">
+            <a href="#" id="active">Today</a>
+            <a href="#">This week</a>
+            <a href="#">Completed</a>
+        </div>
+        <div class="main_tracks">
+            <div class="tracks">
+                <div class="tracks-top">
+                    <img id="profile" src="sprofile.svg">
+                    <p>Water</p>
+                    <div class="done"></div>
+                </div>
+            </div>
+            <div class="tracks">
+                <div class="tracks-top">
+                    <img id="profile" src="sprofile.svg">
+                    <p>Night reading</p>
+                    <div class="done"></div>
+                </div>
+            </div>
+            <div class="tracks">
+                <div class="tracks-top">
+                    <img id="profile" src="sprofile.svg">
+                    <p>Avoid screens</p>
+                    <div class="done"></div>
+                </div>
+            </div>
+            <div class="tracks">
+                <div class="tracks-top">
+                    <img id="profile" src="sprofile.svg">
+                    <p>Meditation</p>
+                    <div class="done"></div>
+                </div>
+            </div>
+        </div>
+        <p id="streak_title">Your current streak</p>
+        <div class="current_streak">
+            <div class="box streak-on">1</div>
+            <div class="box streak-on">2</div>
+            <div class="box streak-on">3</div>
+            <div class="box streak-on">4</div>
+            <div class="box streak-upcoming">5</div>
+            <div class="box streak-upcoming">6</div>
+            <div class="box streak-upcoming">7</div>
+        </div>
+    </div>
+    <div class="line_break lb_two"></div>
+    <footer>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            Home
+        </button>
+        <button class="footer_col settings_button ">
+            <img class="footer_prof" src="sprofile.svg">
+            Habits
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            History
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof settings_image" src="sprofile.svg">
+            Settings
+        </button>
+    </footer>
+    <script>
+    const currentStep = 4;
+    const totalSteps = 5;
+    const targetProgress = (currentStep / totalSteps) * 100;
+
+    const circle = document.querySelector('.progress-circle');
+    const text = document.getElementById('progress-text');
+
+    const radius = 65;
+    const circumference = 2 * Math.PI * radius;
+
+    circle.style.strokeDasharray = circumference;
+    circle.style.strokeDashoffset = circumference;
+
+    // Animate circle
+    setTimeout(() => {
+        const offset = circumference - (targetProgress / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
+    }, 100);
+
+    // Animate number as a fraction
+    text.textContent = `${currentStep}/${totalSteps}`;
+
+    const habits = [
+        { name: 'Water', current: 3, total: 5 },
+        { name: 'Night Reading', current: 4, total: 7 },
+        { name: 'Avoid screens', current: 2, total: 4 },
+        { name: 'Meditation', current: 5, total: 5 }
+    ];
+
+    const tracks = document.querySelectorAll('.tracks');
+
+    habits.forEach((habit, index) => {
+        const container = tracks[index];
+
+        const progressDiv = document.createElement('div');
+        progressDiv.className = 'habit-progress';
+
+        const bar = document.createElement('div');
+        bar.className = 'progress-bar';
+
+        const fill = document.createElement('div');
+        fill.className = 'progress-fill';
+        const percent = (habit.current / habit.total) * 100;
+        fill.style.width = `${percent}%`;
+
+        const label = document.createElement('div');
+        label.className = 'progress-label';
+        label.textContent = `${habit.current}/${habit.total}`;
+
+        bar.appendChild(fill);
+        progressDiv.appendChild(bar);
+        progressDiv.appendChild(label);
+
+        container.appendChild(progressDiv);
+    });
+    
+    </script>
+</body>
+</html>
