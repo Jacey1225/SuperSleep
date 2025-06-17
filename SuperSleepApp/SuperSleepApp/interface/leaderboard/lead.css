@@ -10,7 +10,8 @@ body {
     height: 100vh;
     width: 100vw;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: stretch;
+    justify-content: flex-start;
     font-family: 'Sora', sans-serif;
 }
 
@@ -101,7 +102,8 @@ body {
 .progress-bar-container {
     background-color: #2E465E;
     height: 8px;
-    width: 100%;
+    width: 90%;
+    margin: 0.5rem 0rem 0.5rem 2rem;
     border-radius: 5px;
     overflow: hidden;
 }
@@ -112,4 +114,57 @@ body {
     width: 0%; /* Filled dynamically */
     border-radius: 5px;
     transition: width 0.4s ease-in-out;
+}
+
+/* IMAGES */
+
+.friend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.friend-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.friend-rank {
+    font-weight: bold;
+    min-width: 1.5rem;
+}
+
+.friend-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.friend-name {
+    white-space: nowrap;
+}
+
+.continue_container {
+    display: flex;
+    margin-top: 2rem; 
+    justify-content: center;
+}
+
+.continue_class {
+    text-align: center;
+    color: white;
+    background-color:  #7C6FF0;
+    padding: 1rem 8rem 1rem 8rem;
+    border-radius: 4rem;
+    border: none;
+    font-family: 'Sora', sans-serif;
+    margin-bottom: 1rem;
+}
+
+.continue_container button:hover {
+    background-color: #7C6FF0;
+    color: white;
 }

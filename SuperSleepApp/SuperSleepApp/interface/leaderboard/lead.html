@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings Page</title>
+    <title>Leaderboard Page</title>
     <link rel="stylesheet" href="lead.css">
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -16,8 +16,21 @@
         <p class="title leaderboard">Leaderboard</p>
         <p class="subtitle leaderboard">Friends & Family</p>
     </div>
+    <div class="top_leads">
+        <div class="top_nums">
+            <img src="pic.png">
+            <p id="emma">Emma Davis</p>
+            <p id="tops">90%</p>
+        </div>
+    </div>
     <div class="others">
-        <div id="friendsList"></div>
+        <div id="friendsList">
+            <img src="pic.png">
+        </div>
+    </div>
+
+    <div class="continue_container">
+        <button class="continue_class" id="continueBtn" disabled>Invite a Friend</button>
     </div>
     
     <script>
@@ -33,22 +46,45 @@
         const friendsList = document.getElementById('friendsList');
         friendsList.innerHTML = ''; // clear old content
 
-        friends.forEach(friend => {
+        friends.forEach((friend, index) => {
         const card = document.createElement('div');
         card.className = 'friend-card';
 
         const header = document.createElement('div');
         header.className = 'friend-header';
 
+        // Number
+        const number = document.createElement('span');
+        number.textContent = `${index + 1}`;
+        number.className = 'friend-rank';
+
+        // Image
+        const img = document.createElement('img');
+        img.src = 'pic.png';
+        img.alt = 'Profile';
+        img.className = 'friend-img';
+
+        // Name
         const name = document.createElement('p');
         name.textContent = friend.name;
+        name.className = 'friend-name';
 
+        // Progress %
         const percent = document.createElement('p');
         percent.textContent = `${friend.progress}%`;
 
-        header.appendChild(name);
+        // Left group: number, image, name
+        const leftGroup = document.createElement('div');
+        leftGroup.className = 'friend-left';
+        leftGroup.appendChild(number);
+        leftGroup.appendChild(img);
+        leftGroup.appendChild(name);
+
+        // Put left group and percent in header
+        header.appendChild(leftGroup);
         header.appendChild(percent);
 
+        // Progress bar
         const progressContainer = document.createElement('div');
         progressContainer.className = 'progress-bar-container';
 
@@ -62,6 +98,7 @@
         card.appendChild(progressContainer);
         friendsList.appendChild(card);
         });
+
     </script>
 </body>
 </html>
