@@ -1,95 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Gradient Circular Progress</title>
+  <meta charset="UTF-8" />
+  <title>Sleep Circles</title>
   <style>
-    .progress-container {
-      width: 150px;
-      height: 150px;
-      position: relative;
-    }
-
-    .progress-svg {
-      transform: rotate(-90deg); /* Start at top */
-      width: 100%;
-      height: 100%;
-    }
-
-    .progress-circle-bg,
-    .progress-circle {
-      fill: #2F2F37;
-      stroke-width: 10;
-      r: 65;
-      cx: 75;
-      cy: 75;
-    }
-
-    .progress-circle-bg {
-      stroke: #2F2F37;
-    }
-
-    .progress-circle {
-      stroke: url(#gradient); /* Gradient stroke */
-      stroke-linecap: round;
-      stroke-dasharray: 408;
-      stroke-dashoffset: 408;
-      transition: stroke-dashoffset 1.5s ease-out;
-    }
-
-    .progress-text {
+    body {
+      background: #1e1e24;
       color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .sleep-container {
+      display: flex;
+      gap: 40px;
+    }
+
+    .circle-wrapper {
+      text-align: center;
+    }
+
+    .circle-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+
+    .circle-svg {
+      width: 120px;
+      height: 120px;
+      transform: rotate(-90deg);
+    }
+
+    .circle-bg, .circle-fill {
+      fill: none;
+      stroke-width: 12;
+      r: 50;
+      cx: 60;
+      cy: 60;
+    }
+
+    .circle-bg {
+      stroke: #444;
+    }
+
+    .circle-fill {
+      stroke: #3ba4f9;
+      stroke-linecap: round;
+    }
+
+    .circle-center {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 1.5em;
-      font-family: Arial, sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .circle-mins {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    .circle-label {
+      font-size: 14px;
+      color: #aaa;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
 
-<div class="progress-container">
-  <svg class="progress-svg" viewBox="0 0 150 150">
-    <!-- Gradient definition: Purple to Blue -->
-    <defs>
-      <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#563AC8" />
-        <stop offset="20%" stop-color="#563AC8" />
-        <stop offset="50%" stop-color="#5280A5" />
-        <stop offset="100%" stop-color="#5280A5" />
-      </linearGradient>
-    </defs>
+<div class="sleep-container">
+  <!-- REM Sleep -->
+  <div class="circle-wrapper">
+    <div class="circle-label">REM Sleep</div>
+    <div class="circle-container">
+      <svg class="circle-svg" viewBox="0 0 120 120">
+        <circle class="circle-bg" r="50" cx="60" cy="60" />
+        <circle class="circle-fill" id="rem-fill" r="50" cx="60" cy="60" />
+      </svg>
+      <div class="circle-center" id="rem-text"></div>
+    </div>
+    <div class="circle-mins" id="rem-mins"></div>
+  </div>
 
-    <circle class="progress-circle-bg" r="65" cx="75" cy="75" />
-    <circle class="progress-circle" r="60" cx="75" cy="75" fill="#2F2F37"/>
-  </svg>
-  <div class="progress-text" id="progress-text">0%</div>
+  <!-- Total Sleep -->
+  <div class="circle-wrapper">
+    <div class="circle-label">Total Sleep</div>
+    <div class="circle-container">
+      <svg class="circle-svg" viewBox="0 0 120 120">
+        <circle class="circle-bg" r="50" cx="60" cy="60" />
+        <circle class="circle-fill" id="total-fill" r="50" cx="60" cy="60" />
+      </svg>
+      <div class="circle-center" id="total-text"></div>
+    </div>
+    <div class="circle-mins" id="total-mins"></div>
+  </div>
+
+  <!-- Light Sleep -->
+  <div class="circle-wrapper">
+    <div class="circle-label">Light Sleep</div>
+    <div class="circle-container">
+      <svg class="circle-svg" viewBox="0 0 120 120">
+        <circle class="circle-bg" r="50" cx="60" cy="60" />
+        <circle class="circle-fill" id="light-fill" r="50" cx="60" cy="60" />
+      </svg>
+      <div class="circle-center" id="light-text"></div>
+    </div>
+    <div class="circle-mins" id="light-mins"></div>
+  </div>
 </div>
 
 <script>
-  const currentStep = 4;
-  const totalSteps = 5;
-  const targetProgress = (currentStep / totalSteps) * 100;
+  // ✅ Sleep data (dynamic)
+  const totalMinutes = 420;
+  const remMinutes = 90;
+  const lightMinutes = 150;
 
-  const circle = document.querySelector('.progress-circle');
-  const text = document.getElementById('progress-text');
+  // ✅ Calculate percentages
+  const remPercent = (remMinutes / totalMinutes) * 100;
+  const lightPercent = (lightMinutes / totalMinutes) * 100;
+  const totalPercent = 100; // Total sleep is full circle
 
-  const radius = 65;
-  const circumference = 2 * Math.PI * radius;
+  // ✅ Function to update circle
+  const setCircle = (id, percent, minutes) => {
+    const fill = document.getElementById(id + '-fill');
+    const percentText = document.getElementById(id + '-text');
+    const minsText = document.getElementById(id + '-mins');
 
-  circle.style.strokeDasharray = circumference;
-  circle.style.strokeDashoffset = circumference;
+    const radius = 50;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference * (1 - percent / 100);
 
-  // Animate circle
-  setTimeout(() => {
-    const offset = circumference - (targetProgress / 100) * circumference;
-    circle.style.strokeDashoffset = offset;
-  }, 100);
+    fill.style.strokeDasharray = `${circumference}`;
+    fill.style.strokeDashoffset = offset;
 
-  // Animate number as a fraction
-  text.textContent = `${currentStep}/${totalSteps}`;
+    percentText.textContent = `${Math.round(percent)}%`;
+    minsText.textContent = `${minutes} min`;
+  };
+
+  // ✅ Set each circle dynamically
+  setCircle('rem', remPercent, remMinutes);
+  setCircle('light', lightPercent, lightMinutes);
+  setCircle('total', totalPercent, totalMinutes);
 </script>
 
 </body>

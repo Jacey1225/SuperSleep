@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="history.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="breathing"></div>
+    <div class="header">
+        <p id="settings"> < &nbsp; Settings </p>
+        <img id="profile" src="sprofile.svg">
+    </div>
+    <div class="line_break"></div>
+    <div class="main_content">
+        <div class="cal">
+            <div class="calendar-container">
+                <p id="month-year"></p>
+                <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+        </div>
+        <div class="bottom_content">
+            <div class="time">
+                <div id="total_hours"></div><!-- dynamic time (total hours) on how much sleep the user got last night -->
+                <div id="time_range"></div><!-- dynamic time the user slept and what time they woke up (e.g 23:00 - 7:00) -->
+            </div>
+            <div class="sleep_efficiency">
+                <p id="sleep_title">Sleep Efficiency</p>
+                <div id="percentage"></div><!-- dynamic percentage calculation comparing the user's hours slept to the standard healthy sleep hours -->     
+            </div>
+            <div class="sleep-container">
+            <!-- REM Sleep -->
+                <div class="circle-wrapper">
+                    <div class="circle-label">REM</div>
+                    <div class="circle-container">
+                        <svg class="circle-svg" viewBox="0 0 120 120">
+                            <circle class="circle-bg" r="50" cx="60" cy="60" />
+                            <circle class="circle-fill" id="rem-fill" r="50" cx="60" cy="60" />
+                        </svg>
+                        <div class="circle-center" id="rem-text"></div>
+                    </div>
+                    <div class="circle-mins" id="rem-mins"></div>
+                </div>
+
+                <!-- Total Sleep -->
+                <div class="circle-wrapper">
+                    <div class="circle-label">Total Sleep</div>
+                    <div class="circle-container">
+                        <svg class="circle-svg" viewBox="0 0 120 120">
+                            <circle class="circle-bg" r="50" cx="60" cy="60" />
+                            <circle class="circle-fill" id="total-fill" r="50" cx="60" cy="60" />
+                        </svg>
+                        <div class="circle-center" id="total-text"></div>
+                    </div>
+                    <div class="circle-mins" id="total-mins"></div>
+                </div>
+
+                <!-- Light Sleep -->
+                <div class="circle-wrapper">
+                    <div class="circle-label">Light Sleep</div>
+                    <div class="circle-container">
+                        <svg class="circle-svg" viewBox="0 0 120 120">
+                            <circle class="circle-bg" r="50" cx="60" cy="60" />
+                            <circle class="circle-fill" id="light-fill" r="50" cx="60" cy="60" />
+                        </svg>
+                        <div class="circle-center" id="light-text"></div>
+                    </div>
+                    <div class="circle-mins" id="light-mins"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="line_break lb_two"></div>
+    <footer>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            Home
+        </button>
+        <button class="footer_col static ">
+            <img class="footer_prof" src="sprofile.svg">
+            Habits
+        </button>
+        <button class="footer_col settings_button">
+            <img class="footer_prof" src="sprofile.svg">
+            History
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof settings_image" src="sprofile.svg">
+            Settings
+        </button>
+    </footer>
+    <script>
+        const calendarGrid = document.getElementById('calendar-grid');
+        const monthYear = document.getElementById('month-year');
+
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth(); // 0-indexed
+
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startDay = firstDay.getDay(); // 0 (Sun) - 6 (Sat)
+
+        const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+        ];
+
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        dayNames.forEach(day => {
+        const dayCell = document.createElement('div');
+        dayCell.classList.add('day-name');
+        dayCell.textContent = day;
+        calendarGrid.appendChild(dayCell);
+        });
+
+
+        monthYear.textContent = `${monthNames[month]} ${year}`;
+
+        // Add blank cells before the first day of the month
+        for (let i = 0; i < startDay; i++) {
+        const empty = document.createElement('div');
+        calendarGrid.appendChild(empty);
+        }
+
+        // Generate day cells
+        for (let day = 1; day <= daysInMonth; day++) {
+        const cell = document.createElement('div');
+        cell.classList.add('date');
+        cell.textContent = day;
+
+        const current = new Date(year, month, day);
+
+        if (current.toDateString() === today.toDateString()) {
+            cell.classList.add('today');
+        } else if (current < today) {
+            cell.classList.add('past-date');
+        }
+
+        calendarGrid.appendChild(cell);
+        }
+
+        // ✅ Sleep data (dynamic)
+        const totalMinutes = 420;
+        const remMinutes = 90;
+        const lightMinutes = 150;
+
+        // ✅ Calculate percentages
+        const remPercent = (remMinutes / totalMinutes) * 100;
+        const lightPercent = (lightMinutes / totalMinutes) * 100;
+        const totalPercent = 100; // Total sleep is full circle
+
+        // ✅ Function to update circle
+        const setCircle = (id, percent, minutes) => {
+            const fill = document.getElementById(id + '-fill');
+            const percentText = document.getElementById(id + '-text');
+            const minsText = document.getElementById(id + '-mins');
+
+            const radius = 50;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference * (1 - percent / 100);
+
+            fill.style.strokeDasharray = `${circumference}`;
+            fill.style.strokeDashoffset = offset;
+
+            percentText.textContent = `${Math.round(percent)}%`;
+            minsText.textContent = `${minutes} min`;
+        };
+
+        // ✅ Set each circle dynamically
+        setCircle('rem', remPercent, remMinutes);
+        setCircle('light', lightPercent, lightMinutes);
+        setCircle('total', totalPercent, totalMinutes);
+
+    </script>
+</body>
+</html>
