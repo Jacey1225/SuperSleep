@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 struct AchievementView: View {
     @State private var selectedChoice: Int? = nil
@@ -6,6 +7,8 @@ struct AchievementView: View {
     @State private var numberInput: String = ""
     @State private var timeRange: String = "Day"
     @State private var navigateToDevices = false
+
+    let uuid = SessionManager.shared.uuid
     
     let choices = [
         ("shealth", "Sleep Better"),
@@ -47,18 +50,14 @@ struct AchievementView: View {
                                             .frame(width: 40, height: 40)
                                         Text(choices[idx].1)
                                             .font(.custom("Sora-Regular", size: 13))
-                                            .foregroundColor(selectedChoice == idx ? Color("AccentPurple") : .white)
+                                            .foregroundColor(.white)
                                     }
-                                    .frame(maxWidth: .infinity, minHeight: 80, maxHeight: 100)
+                                    .frame(width: 120, height: 110)
                                     .padding(.vertical, 8)
                                     .contentShape(Rectangle())
                                 }
-                                .frame(width: 90, height: 110)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .stroke(selectedChoice == idx ? Color("AccentPurple") : Color.white.opacity(0.1), lineWidth: selectedChoice == idx ? 2 : 1)
-                                        .background(selectedChoice == idx ? Color.white.opacity(0.05) : Color.clear)
-                                )
+                                .frame(width: 110, height: 110)
+                                .modifier(AchievementChoiceStyle(isSelected: selectedChoice == idx)) // <-- Apply here
                                 .buttonStyle(PlainButtonStyle())
                             }
                         }
@@ -78,7 +77,7 @@ struct AchievementView: View {
                                 HStack(spacing: 8) {
                                     TextField("", text: $numberInput)
                                         .keyboardType(.numberPad)
-                                        .frame(width: 60)
+                                        .frame(width: 30)
                                         .padding(6)
                                         .background(RoundedRectangle(cornerRadius: 8).stroke(Color("AccentPurple"), lineWidth: 1))
                                         .foregroundColor(.white)
@@ -89,16 +88,19 @@ struct AchievementView: View {
                                         }
                                     }
                                     .pickerStyle(MenuPickerStyle())
-                                    .frame(width: 70)
+                                    .frame(width: 120)
                                     .padding(6)
                                     .background(RoundedRectangle(cornerRadius: 8).stroke(Color("AccentPurple"), lineWidth: 1))
                                     .foregroundColor(.white)
                                 }
                                 .padding(.top, 4)
+                                .background(Color.white.opacity(0.05))
+                                .cornerRadius(8)
                             }
                             .padding(10)
-                            .background(RoundedRectangle(cornerRadius: 14).stroke(Color("AccentPurple"), lineWidth: 2))
-                            .background(RoundedRectangle(cornerRadius: 14).fill(Color.black.opacity(0.7)))
+                            .background(RoundedRectangle(cornerRadius: 14)
+                            .stroke(Color("AccentPurple"), lineWidth: 2)
+                            .background(Color.clear))
                             .padding(.horizontal, 8)
                             .padding(.top, 16)
                         }
