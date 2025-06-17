@@ -228,7 +228,7 @@ body {
 
 .top-bar .progress-bar-fill {
     height: 100%;
-    background: linear-gradient(to right, #5280A5, #A6ABFB);
+    background: linear-gradient(to right, #1da490, #19E8C9);
     border-radius: 5px;
     width: 0%;
     transition: width 0.4s ease-in-out;
