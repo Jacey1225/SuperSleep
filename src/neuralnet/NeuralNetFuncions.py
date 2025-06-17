@@ -67,15 +67,18 @@ class Activations:
         return result
     
 class Normalize:
-    def __init__(self, data):
+    def __init__(self, data=None):
         self.data = pd.DataFrame(data)
         self.columns = self.data.columns
+
+        self.train_data = pd.read_csv("data/Sleep_Stats(2).csv")
     
     def not_digit(self):
-        self.data["Gender"] = self.data["Gender"].replace(
-            {"f": 0, "m": 1, "F": 0, "M": 1, "Female": 0, "Male": 1}
-        )
-        logger.info("Gender normalized to 0, 1")
+        if "Gender" in self.data.columns:
+            self.data["Gender"] = self.data["Gender"].replace(
+                {"f": 0, "m": 1, "F": 0, "M": 1, "Female": 0, "Male": 1}
+            )
+            logger.info("Gender normalized to 0, 1")
 
         if "BMI Category" in self.data.columns:
             self.data["BMI Category"] = self.data["BMI Category"].replace(
@@ -102,12 +105,6 @@ class Normalize:
             )
             logger.info("Dietary Habits normalized to 0, 1, 2")
 
-        if self.data["Physical Activity Level"].apply(lambda x: isinstance(x, str)).any():
-            self.data["Physical Activity Level"] = self.data["Physical Activity Level"].replace(
-                {"low": 0, "medium": 1, "high": 2}
-            )
-            logger.info("Physical Activity Level normalized to 0, 1, 2")
-
         return self.data
     
     def time_to_float(self, time_str):
@@ -130,4 +127,31 @@ class Normalize:
             max = np.max(self.data[column])
             self.data[column] = (self.data[column] - min) / (max - min)
             logger.info(f"Column {column} normalized with min: {min}, max: {max}")
+
+    def adjust_outliers_on_input(self, has_device=False):
+        if has_device:
+            normalizer = Normalize(self.train_data.drop(columns=["User ID"]))
+        else:
+            normalizer = Normalize(self.train_data.drop(columns=["User ID", "Heart Rate", "Daily Steps"]))
+
+        normalizer.not_digit()
+        train_data = normalizer.data
+        for column in self.data.columns:
+            if column in train_data.columns and pd.api.types.is_numeric_dtype(self.data[column]):
+                min_val = train_data[column].min()
+                max_val = train_data[column].max()
+
+                if max_val != min_val:
+                    logger.info(f"Normalizing column {column} with min: {min_val}, max: {max_val}")
+                    self.data[column] = (self.data[column] - min_val) / (max_val - min_val)
+                else:
+                    logger.warning(f"Column {column} has constant value, setting to 0.0")
+                    self.data[column] = 0.0
+
+    def decode_label(self, prediction):
+        y_max = self.train_data["Sleep Quality"].max()
+        y_min = self.train_data["Sleep Quality"].min()
+
+        sleep_quality = (prediction * (y_max - y_min)) + y_min
+        return sleep_quality * 10
 

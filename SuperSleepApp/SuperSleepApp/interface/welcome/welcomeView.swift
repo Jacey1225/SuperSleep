@@ -1,4 +1,14 @@
 import SwiftUI
+import Foundation
+
+class SessionManager {
+    static let shared = SessionManager()
+    let uuid: String
+
+    private init() {
+        self.uuid = UUID().uuidString
+    }
+}
 
 struct WelcomeView: View {
     @State private var navigateToAchievement = false

@@ -8,5 +8,9 @@
 		<string>Sora-Regular.ttf</string>
 		<string>Sora-SemiBold.ttf</string>
 	</array>
+	<key>NSHealthShareUsageDescription</key>
+	<string>This app needs access to your health data (heart rate and steps) to provide personalized insights.</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>This app needs access to update your health data.</string>
 </dict>
 </plist>

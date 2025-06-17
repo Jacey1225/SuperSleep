@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		379478EC2DF92F4400B5CF75 /* Exceptions for "SuperSleepApp" folder in "SuperSleepApp" target */ = {
+		3794795A2DF9350B00B5CF75 /* Exceptions for "SuperSleepApp" folder in "SuperSleepApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -43,7 +43,7 @@
 		374191882DF9206E00CDD329 /* SuperSleepApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				379478EC2DF92F4400B5CF75 /* Exceptions for "SuperSleepApp" folder in "SuperSleepApp" target */,
+				3794795A2DF9350B00B5CF75 /* Exceptions for "SuperSleepApp" folder in "SuperSleepApp" target */,
 			);
 			path = SuperSleepApp;
 			sourceTree = "<group>";
