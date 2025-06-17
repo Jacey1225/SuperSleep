@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Two Page</title>
+    <link rel="stylesheet" href="basic_two.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="breathing"></div>
+    <div class="main_content">
+        <p id="complete">Complete your basic information</p>
+        
+        <div id="top">
+            <p>We found some data that can 
+                help you get started faster
+            </p>
+            <div id="data_container">
+                <button id="use_device">Use this data</button>
+            </div>
+        </div>
+
+        <div class="main_containers">
+            
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">Daily Physical Activity</p>
+                </div>
+                <details class="css-dropdown right_side">
+                    <summary>
+                        <span class="selected-option choice">Daily physical activity level</span>
+                        <span class="arrow">&#9662;</span>
+                    </summary>
+                    <ul class="dropdown-list">
+                        <li><input type="radio" name="option" id="opt1"><label for="opt1">Male</label></li>
+                        <li><input type="radio" name="option" id="opt2"><label for="opt2">Female</label></li>
+                        <li><input type="radio" name="option" id="opt3"><label for="opt3">Prefer not to say</label></li>
+                    </ul>
+                </details>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">What time do you usually go to bed?</p>
+                </div>
+                <div class="input_con">
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                    <p id="input_division">:</p>
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                </div>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">What time do you usually wake up?</p>
+                </div>
+                <div class="input_con">
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                    <p id="input_division">:</p>
+                    <input class="input" placeholder="0">
+                    <input class="input" placeholder="0">
+                </div>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">Estimated Stress Level</p>
+                </div>
+                <div class="slider_contain">
+                    <div class="slider-container">
+                        <input type="range" min="0" max="2" step="1" value="1" id="range" />
+                        <div class="label" id="range-label">Medium</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container_content one">
+                <div class="sub">
+                    <img src="sprofile.svg">
+                    <p class="titles">Do you have any sleep disorders?</p>
+                </div>
+                <div class="button_contain">
+                    <button class="disorders">Yes</button>
+                    <button class="disorders no">No</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="continue_container">
+        <button class="continue_class" id="continueBtn" disabled>Continue</button>
+    </div>
+    <script>
+    const range = document.getElementById("range");
+    const label = document.getElementById("range-label");
+    const values = ["Low", "Medium", "High"];
+
+    function updateLabelAndTrack() {
+      const val = parseInt(range.value, 10);
+      label.textContent = values[val];
+
+      const percent = (val / 2) * 100;
+
+      range.style.background = `linear-gradient(to right, #00A492 ${percent}%, rgba(43, 70, 100, 0.4) ${percent}%)`;
+    }
+
+    range.addEventListener("input", updateLabelAndTrack);
+    updateLabelAndTrack(); // Set initial state on page load
+  </script>
+</body>
+</html>

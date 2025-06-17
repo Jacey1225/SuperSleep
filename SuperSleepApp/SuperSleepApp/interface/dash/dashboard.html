@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Page</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="breathing"></div>
+    <div class="header">
+        <p id="settings"> SuperSLeepAI </p>
+        <img id="profile" src="sprofile.svg">
+    </div>
+    <div class="line_break"></div>
+    <div class="main_content">
+        <div id="today_sum">
+            <p class="top_head hi">Hi John!</p>
+            <p class="top_head subtitle_summary">Today's Summary</p>
+            <div class="container" id="waterContainer">
+                <div class="wave" id="wave"></div>
+                <div class="percentage-text" id="percentageText">80/100</div>
+            </div>
+            <p id="sleep_quality">Your sleep quality is close to optimal.</p>
+        </div>
+        <div class="micro_habit">
+            <p class="reminder_title">Your micro-habit today</p>
+            <p class="reminder_title">></p>
+        </div>
+        <div class="five">
+            <p>5 minutes of mindful breathing</p>
+            <button>/</button>
+        </div>
+
+        <div class="weekly_progress">
+            <p class="weekly">Weekly progress</p>
+            <p class="weekly">></p>
+        </div>
+
+        <div class="chart_code">
+            <div class="chart" id="chart"></div>
+            <div class="summary" id="summary">0 out of 7 nights of healthy sleep</div>
+        </div>
+
+        <div class="micro_habit">
+            <p class="reminder_title">Your Friends & Family</p>
+            <p class="reminder_title">></p>
+        </div>
+        <div id="friendsList"></div>
+
+        <div class="habits">
+            <div class="micro_habit">
+                <p class="habits_title">Habits Progress</p>
+                <p class="habits_title">></p>
+            </div>
+            <div class="sub_habits">
+                <img src="sprofile.svg">
+                <p class="water">Water</p>
+                <p>6/8 glasses</p>
+            </div>
+            <div class="sub_habits">
+                <img src="sprofile.svg">
+                <p class="water">Night reading</p>
+                <p>3/5 completed</p>
+            </div>
+            <div class="sub_habits">
+                <img src="sprofile.svg">
+                <p class="water">Avoid screens</p>
+                <p>5/7 completed</p>
+            </div>
+            <div class="sub_habits">
+                <img src="sprofile.svg">
+                <p class="water">Meditation</p>
+                <p>4/7 completed</p>
+            </div>
+        </div>
+    </div>
+    <div class="line_break lb_two"></div>
+    <footer>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            Home
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            Habits
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            History
+        </button>
+        <button class="footer_col settings_button">
+            <img class="footer_prof settings_image" src="sprofile.svg">
+            Settings
+        </button>
+    </footer>
+    <script>
+        const percentage = 50; // change this dynamically if needed
+        const wave = document.getElementById('wave');
+        const container = document.getElementById('waterContainer');
+        const percentageText = document.getElementById('percentageText');
+
+        function updateWater(percent) {
+        const containerHeight = container.offsetHeight;
+        const fillHeight = containerHeight * (1 - percent / 100);
+        wave.style.top = fillHeight + "px";
+        percentageText.textContent = `${percent}/100`;
+        }
+
+        updateWater(percentage);
+
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const values = [90, 40, 70, 80, 30, 85, 100]; // 0–100%
+
+        const chart = document.getElementById('chart');
+        const summary = document.getElementById('summary');
+
+        chart.innerHTML = ''; // Clear previous if any
+
+        let healthyCount = 0;
+
+        days.forEach((day, index) => {
+        const val = values[index];
+        const barContainer = document.createElement('div');
+        barContainer.className = 'bar-container';
+
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = '0%'; // Start collapsed
+
+        if (val >= 50) {
+            bar.style.background = 'linear-gradient(to top, #08675F, #3F668A)';
+            healthyCount++; // ✅ Only count here
+        } else {
+            bar.style.background = '#2E465E';
+        }
+
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.textContent = day;
+
+        barContainer.appendChild(bar);
+        barContainer.appendChild(label);
+        chart.appendChild(barContainer);
+
+        setTimeout(() => {
+            bar.style.height = `${val}%`;
+        }, index * 100);
+        });
+        summary.textContent = `${healthyCount} out of 7 nights of healthy sleep`;
+    
+        const friends = [
+        { name: 'Rachel Kim', progress: 80 },
+        { name: 'David Lee', progress: 60 },
+        { name: 'Mina Chen', progress: 95 },
+        { name: 'Alex Park', progress: 45 },
+        ];
+
+        const friendsList = document.getElementById('friendsList');
+        friendsList.innerHTML = ''; // clear old content
+
+        friends.forEach(friend => {
+        const card = document.createElement('div');
+        card.className = 'friend-card';
+
+        const header = document.createElement('div');
+        header.className = 'friend-header';
+
+        const name = document.createElement('p');
+        name.textContent = friend.name;
+
+        const percent = document.createElement('p');
+        percent.textContent = `${friend.progress}%`;
+
+        header.appendChild(name);
+        header.appendChild(percent);
+
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'progress-bar-container';
+
+        const progressFill = document.createElement('div');
+        progressFill.className = 'progress-bar-fill';
+        progressFill.style.width = `${friend.progress}%`;
+
+        progressContainer.appendChild(progressFill);
+
+        card.appendChild(header);
+        card.appendChild(progressContainer);
+        friendsList.appendChild(card);
+        });
+    </script>
+</body>
+</html>

@@ -3,17 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievement Page</title>
+    <title>Settings Page</title>
     <link rel="stylesheet" href="settings.css">
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="breathing"></div>
+    <div class="header">
+        <p id="settings"> < &nbsp; Settings </p>
+        <img id="profile" src="sprofile.svg">
+    </div>
+    <div class="line_break"></div>
     <div class="main_content">
-        <img class="moon" src="assets/success_moon.svg">
+        <div id="button_container">
+            <button class="john">
+                <p id="jj">John Doe</p>
+                <div id="arrow">></div>
+            </button>
+        </div>
+        <p id="reminder_title">Reminders & Notifications</p>
+        <div id="full_notifs">
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Sleep time reminder</p>
+                    <div class="container">
+                        <div class="toggle-row">
+                            <div>
+                                <!-- The actual checkbox input (hidden) -->
+                                <input type="checkbox" id="toggle_sleep" class="toggle-checkbox">
+                                <!-- The label that visually represents the toggle switch -->
+                                <label for="toggle_sleep" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Morning hydration reminder</p>
+                    <div class="container">
+                        <div class="toggle-row">
+                            <div>
+                                <!-- The actual checkbox input (hidden) -->
+                                <input type="checkbox" id="toggle_hydrate" class="toggle-checkbox">
+                                <!-- The label that visually represents the toggle switch -->
+                                <label for="toggle_hydrate" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Habit check-in notifications</p>
+                    <div class="container">
+                        <div class="toggle-row">
+                            <div>
+                                <!-- The actual checkbox input (hidden) -->
+                                <input type="checkbox" id="toggle_habit" class="toggle-checkbox">
+                                <!-- The label that visually represents the toggle switch -->
+                                <label for="toggle_habit" class="toggle-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p id="reminder_title">Language & Region</p>
+        <div id="full_notifs">
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Language</p>
+                    <details class="css-dropdown right_side">
+                        <summary>
+                            <span class="selected-option choice">English</span>
+                            <span class="arrow">&#9662;</span>
+                        </summary>
+                        <ul class="dropdown-list">
+                            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+                            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+                            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Time Zone</p>
+                    <details class="css-dropdown right_side">
+                        <summary>
+                            <span class="selected-option choice">CST</span>
+                            <span class="arrow">&#9662;</span>
+                        </summary>
+                        <ul class="dropdown-list">
+                            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+                            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+                            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </div>
+        <p id="reminder_title">Theme Settings</p>
+        <div id="full_notifs">
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Font Size</p>
+                    <details class="css-dropdown right_side">
+                        <summary>
+                            <span class="selected-option choice">Medium</span>
+                            <span class="arrow">&#9662;</span>
+                        </summary>
+                        <ul class="dropdown-list">
+                            <li><input type="radio" name="option" id="opt1"><label for="opt1">Option 1</label></li>
+                            <li><input type="radio" name="option" id="opt2"><label for="opt2">Option 2</label></li>
+                            <li><input type="radio" name="option" id="opt3"><label for="opt3">Option 3</label></li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </div>
+        <p id="reminder_title">Account Options</p>
+        <div id="full_notifs">
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Privacy Policy</p>
+                    <p class="right_side">></p>
+                </div>
+            </div>
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Sign Out</p>
+                    <p class="right_side">></p>
+                </div>
+            </div>
+            <div class="gray">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p>Contact Support</p>
+                    <p class="right_side">></p>
+                </div>
+            </div>
+            <div class="gray delete">
+                <div class="icon_text">
+                    <img class="main_icons" src="sprofile.svg">
+                    <p class="delete_account">Delete Account</p>
+                    <p class="right_side">></p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="continue_container">
-        <button class="continue_class" id="continueBtn" disabled>Continue</button>
-    </div>
+    <div class="line_break lb_two"></div>
+    <footer>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            Home
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            Habits
+        </button>
+        <button class="footer_col static">
+            <img class="footer_prof" src="sprofile.svg">
+            History
+        </button>
+        <button class="footer_col settings_button">
+            <img class="footer_prof settings_image" src="sprofile.svg">
+            Settings
+        </button>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,384 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Sora', sans-serif;
+}
+
+.breathing {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #1E2A38;
+    background-repeat: no-repeat;
+    background-size: 150% 150%;
+    background-position: center center; 
+    animation: breatheBackground 2.5s ease-in-out infinite;
+}
+
+/* @keyframes breatheBackground {
+    0%, 100% {
+        background-size: 100% 100%; 
+        opacity: 1;
+    }
+    35% {
+        background-size: 105% 105%;
+        opacity: 0.95;
+    }
+    70% {
+        background-size: 135% 135%;
+        opacity: 0.95;
+    }
+} */
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: auto;
+    margin-top: 1rem;
+}
+
+/* OTHER STUFF */
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #1E2A38;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0rem 1rem 0rem;
+}
+
+#settings {
+    margin-left: 2rem;
+}
+
+#profile {
+    margin-right: 2rem;
+}
+
+.line_break {
+    border-bottom: rgb(41, 48, 53) solid 0.2rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#button_container {
+    display: flex;
+    margin: 0 auto;
+}
+
+.john,
+.gray {
+    background-color: rgba(43, 61, 79, 0.4);
+    border: none;
+    padding: 1rem;
+    display: flex;
+    width: 22rem;
+    justify-content: space-between;
+}
+
+#jj {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+#arrow {
+    float: right;
+}
+
+/* MAIN STUFF */
+
+.hi {
+    font-size: 1.3em;
+}
+
+.top_head {
+    margin-left: 1rem;
+    line-height: 2rem;
+}
+
+.subtitle_summary {
+    color: #A5BED4;
+}
+
+#sleep_quality {
+    opacity: 60%;
+    text-align: center;
+}
+
+.reminder_title {
+    margin: 1rem 1rem 1rem 1rem;
+    font-size: 1em;
+    color: #A5BED4;
+}
+
+.habits_title {
+    font-size: 1em;
+    color: #A5BED4;
+    padding: 1rem;
+}
+
+.micro_habit {
+    display: flex;
+    justify-content: space-between;
+}
+
+.five {
+    display: flex;
+    justify-content: space-between;
+    border: #5280A5 solid 0.1rem;
+    margin: 0 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.five p {
+    opacity: 60%;
+}
+
+.five button {
+    padding: 0.3rem 0.7rem;
+    border-radius: 3rem;
+    border: none;
+}
+
+.friends {
+    display: flex;
+    opacity: 60%;
+    justify-content: space-between;
+    margin: 0 1rem;
+    background-color: rgba(43, 61, 79, 0.4);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.number_friends {
+    opacity: 100%;
+    font-weight: bold;
+    color: white;
+}
+
+.rachel {
+    margin-right: auto;
+    margin-left: 0.5rem;
+}
+
+.sub_habits {
+    display: flex;
+    justify-content: space-between;
+    opacity: 70%;
+    padding: 1rem;
+}
+
+.water {
+    margin-right: auto;
+    margin-left: 1rem;
+}
+
+.habits {
+    background-color: rgba(43, 61, 79, 0.4);
+    margin: 1rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.weekly_progress {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 1rem 1rem 1rem;
+}
+
+.weekly {
+    font-size: 1em;
+    color: #A5BED4;
+}
+
+/* FOOTER STUFF */
+
+.footer_col {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: none;
+    line-height: 1.3rem;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    padding-top: 0.5rem;
+    position: sticky;
+    bottom: 0;
+    background-color: #1E2A38;
+    z-index: 1;
+}
+
+.static {
+    color: #76778C;
+}
+
+.lb_two {
+    margin-top: 1.5rem;
+}
+
+.settings_image {
+    color: #A6ABFB;
+}
+
+.settings_button {
+    color: #A6ABFB;
+}
+
+/* WATER */
+
+.container {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: #2F2F37;
+    overflow: hidden;
+    box-shadow: 0 0 35px #563AC8;
+    margin: 1.3rem auto;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(to bottom, #5280A5, #563AC8);
+    border-radius: 40%;
+    animation: waveAnim 5s infinite linear;
+}
+
+.fill-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #0f182b;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.percentage-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: #A5BED4;
+    z-index: 3;
+    font-weight: bold;
+}
+
+@keyframes waveAnim {
+    0% {
+    transform: translateX(-50%) translateY(40px);
+    }
+    50% {
+    transform: translateX(-8%) translateY(-5px);
+    }
+    100% {
+    transform: translateX(-50%) translateY(40px);
+    }
+}
+
+/* CHART CODE */
+
+.chart_code {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem auto;
+}
+
+.chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 2.5rem;
+    height: 100%; /* 👈 This is critical */
+    justify-content: flex-end;
+}
+
+.bar {
+    width: 100%;
+    background: linear-gradient(to top, #2f9ca4, #3b67c2);
+    border-radius: 1rem;
+    transition: height 0.6s ease-out;
+    min-height: 5px; /* 👈 Optional so even small bars show up */
+}
+
+.label {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #bbb;
+}
+
+.summary {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    opacity: 80%;
+}
+
+/* FRIENDS LIST */
+
+.friend-card {
+    background-color: rgba(43, 61, 79, 0.4);
+    padding: 1rem;
+    margin: 0 1rem 1rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.friend-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.progress-bar-container {
+    background-color: #2E465E;
+    height: 8px;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    background: linear-gradient(to right, #5280A5, #A6ABFB);
+    height: 100%;
+    width: 0%; /* Filled dynamically */
+    border-radius: 5px;
+    transition: width 0.4s ease-in-out;
+}

@@ -11,7 +11,6 @@ body {
     width: 100vw;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     font-family: 'Sora', sans-serif;
 }
 
@@ -22,23 +21,14 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: #1E2A38 radial-gradient(circle at center, #4a6595 0%, transparent 75%);
+    background: #1E2A38;
     background-repeat: no-repeat;
     background-size: 150% 150%;
     background-position: center center; 
     animation: breatheBackground 2.5s ease-in-out infinite;
 }
 
-.moon {
-    height: 90px;
-    width: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: -4rem 0rem 0rem 0rem;
-}
-
-@keyframes breatheBackground {
+/* @keyframes breatheBackground {
     0%, 100% {
         background-size: 100% 100%; 
         opacity: 1;
@@ -51,26 +41,307 @@ body {
         background-size: 135% 135%;
         opacity: 0.95;
     }
-}
+} */
 
-.continue_container {
+.main_content {
     display: flex;
-    margin-bottom: 2rem;
-    margin-top: auto; 
-    justify-content: center;
+    flex-direction: column;
+    margin-bottom: auto;
+    margin-top: 1rem;
 }
 
-.continue_class {
-    text-align: center;
-    color: #A0A3B4;
-    background-color: #2F2F37;
-    padding: 1rem 8rem 1rem 8rem;
-    border-radius: 4rem;
+/* OTHER STUFF */
+
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #1E2A38;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0rem 1.5rem 0rem;
+}
+
+#settings {
+    margin-left: 2rem;
+}
+
+#profile {
+    margin-right: 2rem;
+}
+
+.line_break {
+    border-bottom: rgb(41, 48, 53) solid 0.2rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#button_container {
+    display: flex;
+    margin: 0 auto;
+}
+
+.john,
+.gray {
+    background-color: rgba(43, 61, 79, 0.4);
     border: none;
-    font-family: 'Sora', sans-serif;
+    padding: 1rem;
+    display: flex;
+    width: 22rem;
+    justify-content: space-between;
 }
 
-.continue_container button:hover {
-    background-color: #7C6FF0;
-    color: white;
+#jj {
+    font-size: 1.6em;
+    font-weight: bold;
+}
+
+#arrow {
+    float: right;
+}
+
+/* MAIN STUFF */
+
+#reminder_title {
+    margin: 2.5rem 0rem 1rem 2rem;
+    font-size: 1em;
+    color: #A5BED4;
+}
+
+#full_notifs {
+    margin: -1rem auto 0rem auto;
+}
+
+.gray {
+    margin-top: 1.2rem;
+    color: #F5F6F8;
+    font-weight: 400;
+}
+
+.gray p {
+    font-size: 0.9em;
+}
+
+.delete_account {
+    color: rgb(255, 49, 49);
+}
+
+.main_icons {
+    margin: 0;
+    padding: 0;
+}
+
+.icon_text {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between;  */
+    gap: 1rem;
+    width: 100%; 
+}
+
+.icon_text > p {
+    flex: 0 1 auto;
+}
+
+.icon_text p {
+    display: flex;
+    flex-direction: flex-start;
+    justify-content: flex-start;
+    font-size: 0.9em;
+}
+
+.right_side {
+    margin-left: auto;
+}
+
+/* FOOTER STUFF */
+
+.footer_col {
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: none;
+    line-height: 1.3rem;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+    padding-top: 0.5rem;
+    position: sticky;
+    bottom: 0;
+    background-color: #1E2A38;
+    z-index: 1;
+}
+
+.static {
+    color: #76778C;
+}
+
+.lb_two {
+    margin-top: 1.5rem;
+}
+
+.settings_image {
+    color: #A6ABFB;
+}
+
+.settings_button {
+    color: #A6ABFB;
+}
+
+/* TOGGLE STUFF */
+
+/* Container for the example */
+.container {
+    background-color: transparent;
+    border-radius: 8px;
+    display: flex;
+    width: auto;
+    justify-content: flex-end; /* OPTIONAL: helps if container wraps toggle */
+    margin-left: auto;
+}
+
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* ensures toggle aligns right inside row */
+    width: 100%;
+}
+
+/* Custom CSS to style the toggle switch */
+/* Hide the default checkbox input */
+.toggle-checkbox {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Style the toggle label (the track) */
+.toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* Width of the toggle track */
+    height: 24px; /* Height of the toggle track */
+    background-color: #0e1924; /* Original slate-300 color */
+    border-radius: 34px; /* Rounded corners for the track */
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out; /* Smooth transition for background */
+}
+
+/* Style the toggle thumb (the circle) */
+.toggle-label::after {
+    content: '';
+    position: absolute;
+    top: 4px; /* Adjust vertical position */
+    left: 4px; /* Adjust horizontal position */
+    width: 16px; /* Width of the thumb */
+    height: 16px; /* Height of the thumb */
+    background-color: #3F668A; /* Original slate-50 color */
+    border-radius: 50%; /* Make it a circle */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for thumb movement */
+}
+
+/* When the checkbox is checked, change the background color of the label (track) */
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #245e55; /* Original blue-500 color when checked */
+}
+
+/* When the checkbox is checked, move the thumb to the right */
+.toggle-checkbox:checked + .toggle-label::after {
+    transform: translateX(26px); /* Move 26px to the right */
+    background-color: #19E8C9;
+}
+
+/* DROPDOWN STUFF */
+
+/* Base container */
+.css-dropdown {
+  position: relative;
+  width: 150px;
+  font-size: 0.8em;
+  font-family: 'Sora', sans-serif;
+}
+
+/* The summary button */
+.css-dropdown summary {
+  list-style: none;            /* Remove default arrow */
+  background: transparent;
+  border: #08675F solid 0.1em;
+  color: white;
+  padding: 0.2rem 0.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 1rem;
+}
+
+.choice {
+    margin-left: 0.5rem;
+}
+
+/* Remove default marker (arrow) */
+.css-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Arrow icon */
+.css-dropdown .arrow {
+  margin-left: 10px;
+  font-size: 1.5rem;
+}
+
+/* Dropdown list */
+.css-dropdown .dropdown-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  width: 100%;
+  background: #34495e;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 100;
+}
+
+/* List items */
+.css-dropdown .dropdown-list li {
+  padding: 0;
+}
+
+/* Hide actual radio inputs */
+.css-dropdown input[type="radio"] {
+  display: none;
+}
+
+/* Label styling for options */
+.css-dropdown label {
+  display: block;
+  padding: 12px 16px;
+  color: white;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.css-dropdown label:hover {
+  background: #3d566e;
+}
+
+/* Close dropdown when not open */
+.css-dropdown[open] .dropdown-list {
+  display: block;
+}
+
+/* OPTIONAL: Use CSS to change selected text via pseudo-selector */
+input[type="radio"]:checked + label::before {
+  content: attr(for);
+  display: none;
 }
