@@ -32,10 +32,6 @@ async def goals(uuid, goal, growth_rate):
     except Exception as e:
         logger.error(f"Error storing goals: {e}")
 
-@app.get('/get-device-data')
-async def get_device_data(uuid):
-    return
-
 # MARK: Helper Functions
 
 def process_bmi(height, weight): #pounds and inches
@@ -78,11 +74,18 @@ async def additional_info(uuid: str, sleep_duration: str, sleep_time: str, wake_
     except Exception as e:
         logger.error(f"Error updating additional info: {e}")
     
+@app.get('/get-device-data')
+async def get_device_data(uuid):
+    return
+
+# MARK: NN Setup
 
 @app.get("/analyze-data")
-async def fetch_data(uuid: str):
-# MARK: NN Setup
-    adjustments = np.load("data/weights.npz")
+async def fetch_data(uuid: str, has_device=False):
+    if has_device:
+        adjustments = np.load("data/weights(1).npz")
+    else:
+        adjustments = np.load("data/weights(no_device).npz")
     input_weights = adjustments['input_weights']
     input_biases = adjustments['input_biases']
 
@@ -99,10 +102,15 @@ async def fetch_data(uuid: str):
     where_values = ["uuid", "day"]
     values = [uuid, datetime.now().strftime("%A")]
     response = db.select_items(select_value, where_values, values)[0]
-    user_data = [response[5], response[4], response[19], response[12], response[14], response[15], response[16], response[11], response[13]]
-    data_df = pd.DataFrame(user_data, columns=["Gender", "Age", "Sleep Duration", "Physical Activity Level", 
-                                               "Stress Level", "BMI Category", "Heart Rate", "Daily Steps", 
-                                               "Sleep Disorders"])
+    if has_device:
+        user_data = [response[5], response[4], response[19], response[12], response[14], response[15], response[16], response[11], response[13]]
+        data_df = pd.DataFrame(user_data, columns=["Gender", "Age", "Sleep Duration", "Physical Activity Level", 
+                                                "Stress Level", "BMI Category", "Heart Rate", "Daily Steps", 
+                                                "Sleep Disorders"])
+    else:
+        user_data = [response[5], response[4], response[19], response[12], response[14], response[15], response[13]]
+        data_df = pd.DataFrame(user_data, columns=["Gender", "Age", "Sleep Duration", "Physical Activity Level",
+                                                "Stress Level", "BMI Category", "Sleep Disorders"])
     
     nn = FNN(
         input_size=len(data_df.columns),
