@@ -25,3 +25,5 @@ mock_data = {
         "group_id": "group-xyz",
         "habits": "{}"
     }
+
+0 uuid | 1 username | 2 height | 3 weight | 4 age | 5 gender | 6 day | 7 sleep_quality | 8 steps | 9 activity_level | 10 disorders | 11 stress | 12 bmi | 13 h_rate | 14 goal | 15 growth_rate | 16 sleep_duration | 17 group_id | 18 habits 

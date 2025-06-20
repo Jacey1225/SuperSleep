@@ -9,6 +9,8 @@ struct Device: Identifiable {
 }
 
 struct DevicesView: View {
+    var onContinue: () -> Void
+    var onSkip: () -> Void
     @State private var devices = [
         Device(imageName: "successfitbit", title: "Fitbit", description: "Automatically sync your steps, workouts, and sleep."),
         Device(imageName: "successheart", title: "Google Fit", description: "Track and sync your fitness and sleep data effortlessly."),
@@ -53,14 +55,16 @@ struct DevicesView: View {
                 Spacer()
                 VStack(spacing: 10) {
                     Button(action: {
-                        // Skip action
+                        AnalyzeService.analyzeData(uuid: SessionManager.shared.uuid, hasDevice: false) { _ in
+                        onSkip()
+                    }
                     }) {
                         Text("Skip for now")
                             .modifier(DevicesSkipStyle())
                     }
                     .frame(maxWidth: .infinity)
                     Button(action: {
-                        // Continue action
+                        onContinue()
                     }) {
                         Text("Continue")
                             .modifier(DevicesContinueButtonTextStyle(isEnabled: canContinue))
@@ -70,18 +74,6 @@ struct DevicesView: View {
                 }
                 .background(Color.clear)
             }
-            // For demonstration, show the fetched values:
-            // VStack {
-            //    if let hr = healthDataManager.heartRate {
-            //        Text("Latest Heart Rate: \(Int(hr)) bpm")
-            //            .foregroundColor(.white)
-            //    }
-            //    if let steps = healthDataManager.dailySteps {
-            //        Text("Today's Steps: \(steps)")
-            //            .foregroundColor(.white)
-            //    }
-            //}
-            //.padding(.top, 40)
         }
     }
 }
@@ -123,4 +115,8 @@ struct DeviceCard: View {
         }
         .modifier(DeviceCardContainerStyle())
     }
+}
+
+#Preview {
+    DevicesView(onContinue: {}, onSkip: {})
 }

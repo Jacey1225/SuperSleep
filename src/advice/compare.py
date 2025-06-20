@@ -7,7 +7,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 logger = logging.getLogger(__name__)
 
 class CompareSleep:
-    def __init__(self, factors, filename="data/Sleep_Stats(2).csv"):
+    def __init__(self, factors, has_device, filename="data/Sleep_Stats(2).csv"):
+        self.has_device = has_device
         self.user_normalizer = Normalize([factors])
         self.factors = factors
         self.user_normalizer.not_digit()
@@ -28,33 +29,43 @@ class CompareSleep:
         self.best_sleep = self.sleep_stats[mask]
 
         if len(self.best_sleep) > 0:
-            logger.info(f"Best sleep stats found: {self.best_sleep.head()}")
+            logger.info(f"Best sleep stats found")
         else:
-            logger.warning("No matching sleep stats found for the user's sleep disorders and predicted sleep quality.")
+            logger.warning(f"No matching sleep stats found for the user's sleep disorders: {user_disorder} and predicted sleep quality: {user_sleep_quality}.")
        
-    def compare_stats(self, threshold=0.3):
+    def compare_stats(self, threshold=0.3): #FIXME: Some factors are not being sued if the device is not being used in data records
         sleep_stat = np.mean(self.best_sleep["Sleep Duration"])
         activity_stat = np.mean(self.best_sleep["Physical Activity Level"])
         bmi_stat = np.mean(self.best_sleep["BMI Category"])
-        h_rate_stat = np.mean(self.best_sleep["Heart Rate"])
-        steps_stat = np.mean(self.best_sleep["Daily Steps"])
         stress_stat = np.mean(self.best_sleep["Stress Level"])
+        if self.has_device:
+            h_rate_stat = np.mean(self.best_sleep["Heart Rate"])
+            steps_stat = np.mean(self.best_sleep["Daily Steps"])
 
         sleep_comp = sleep_stat - self.factors["Sleep Duration"].iloc[0]
         activity_comp = activity_stat - self.factors["Physical Activity"].iloc[0]
         bmi_comp = bmi_stat - self.factors["BMI Category"].iloc[0]
-        h_rate_comp = h_rate_stat - self.factors["Heart Rate"].iloc[0]
-        steps_comp = steps_stat - self.factors["Steps"].iloc[0]
         stress_comp = stress_stat - self.factors["Stress Level"].iloc[0]
+        if self.has_device:
+            h_rate_comp = h_rate_stat - self.factors["Heart Rate"].iloc[0]
+            steps_comp = steps_stat - self.factors["Steps"].iloc[0]
         
-        comparison_stats = {
-            "Sleep Duration": [sleep_comp, sleep_stat],
-            "Physical Activity": [activity_comp, activity_stat],
-            "BMI Category": [bmi_comp, bmi_stat],
-            "Heart Rate": [h_rate_comp, h_rate_stat],
-            "Steps": [steps_comp, steps_stat],
-            "Stress Level": [stress_comp, stress_stat]
-        }
+        if self.has_device:
+            comparison_stats = {
+                "Sleep Duration": [sleep_comp, sleep_stat],
+                "Physical Activity": [activity_comp, activity_stat],
+                "BMI Category": [bmi_comp, bmi_stat], 
+                "Heart Rate": [h_rate_comp, h_rate_stat],
+                "Steps": [steps_comp, steps_stat],
+                "Stress Level": [stress_comp, stress_stat]
+            }
+        else:
+            comparison_stats = {
+                "Sleep Duration": [sleep_comp, sleep_stat],
+                "Physical Activity": [activity_comp, activity_stat],
+                "BMI Category": [bmi_comp, bmi_stat],
+                "Stress Level": [stress_comp, stress_stat]
+            }
         critical_factors = [category for category, metrics in comparison_stats.items() if metrics[0] > (metrics[1] * threshold)]
         logger.info(f"Critical factors affecting sleep: {critical_factors}")
         return critical_factors

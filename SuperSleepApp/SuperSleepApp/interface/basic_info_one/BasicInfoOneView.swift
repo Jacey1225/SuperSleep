@@ -8,8 +8,8 @@ struct BasicInfoOneView: View {
     @State private var weight: String = ""
     @State private var height: String = ""
     @State private var gender: String = "Gender"
-    @State private var weightUnit: String = "Kg"
-    @State private var heightUnit: String = "M"
+    @State private var weightUnit: String = "Lbs"
+    @State private var heightUnit: String = "Ft"
     @State private var showGenderPicker = false
     @State private var showWeightUnitPicker = false
     @State private var showHeightUnitPicker = false
@@ -46,7 +46,19 @@ struct BasicInfoOneView: View {
                 }
                 Spacer()
                 Button(action: {
-                    onContinue()
+                    guard let ageInt = Int(age), let weightInt = Int(weight), let heightInt = Double(height) else {
+                        return
+                    }
+                    BasicInfoService.sendBasicInfo(
+                        uuid: SessionManager.shared.uuid,
+                        username: name,
+                        age: ageInt,
+                        gender: gender,
+                        weight: weightInt,
+                        height: heightInt
+                    ) { result in
+                        onContinue()
+                    }
                 }) {
                     Text("Continue")
                         .font(.custom("Sora-SemiBold", size: 20))
@@ -67,10 +79,10 @@ struct BasicInfoOneView: View {
             PickerSheet(title: "Gender", selection: $gender, options: ["Male", "Female", "Prefer not to say"])
         }
         .sheet(isPresented: $showWeightUnitPicker) {
-            PickerSheet(title: "Weight Unit", selection: $weightUnit, options: ["Kg", "Lbs"])
+            PickerSheet(title: "Weight Unit", selection: $weightUnit, options: ["Lbs"])
         }
         .sheet(isPresented: $showHeightUnitPicker) {
-            PickerSheet(title: "Height Unit", selection: $heightUnit, options: ["M", "Ft"])
+            PickerSheet(title: "Height Unit (eg. 5.09)", selection: $heightUnit, options: ["Ft"])
         }
     }
 }

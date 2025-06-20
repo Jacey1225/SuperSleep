@@ -3,9 +3,8 @@ import SwiftUI
 struct DashboardHeaderSection: View {
     var body: some View {
         HStack {
-            Text("SuperSLeepAI")
-                .font(DashboardFonts.header)
-                .foregroundColor(.white)
+            Image("headertitle")
+                .renderingMode(.original)
                 .padding(.leading, 24)
             Spacer()
             Image("sprofile")
@@ -13,7 +12,9 @@ struct DashboardHeaderSection: View {
                 .frame(width: 36, height: 36)
                 .padding(.trailing, 24)
         }
-        .padding(.vertical, 24)
-        .background(DashboardColors.background)
+        .padding(.top,  UIApplication.shared.connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .first?.safeAreaInsets.top ?? 44)
+        .padding(.vertical, 16)
     }
 }

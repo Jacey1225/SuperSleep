@@ -95,7 +95,7 @@ struct DevicePlusBackgroundStyle: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
-                .fill(isSelected ? Color(hex: "#00A492") : Color(hex: "#2F2F37"))
+                .fill(isSelected ? Color(hex: "#00A492") : .black) 
                 .frame(width: 40, height: 40)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)

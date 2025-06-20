@@ -162,7 +162,8 @@ class DBConnection:
             SET {sets}
             WHERE {wheres};
             """
-            self.cursor.execute(update_query, (values))
+            logger.info(f"Update query: {update_query} with values: {values}")
+            self.cursor.execute(update_query, values)
             self.connection.commit()
         except Error as e:
             logger.error(f"Error updating items: {e}")

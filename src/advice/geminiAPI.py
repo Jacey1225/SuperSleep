@@ -26,24 +26,29 @@ class PromptPlan:
         self.format = "Format and limit your response only as a dictionary and include it with the following information: " \
         "habit to change with the intention of improving the factor of concern: [current progress throughout the week (auto set to zero), " \
         "days per week to commit to the habits based on how mentally demanding the habit can be]." \
-        "For example: {'drink more water': [0, 7], 'exercise more': [0, 5]} No additional explanation is needed other than the dictionary"
+        "For example: {'drink more water': [0, 7], 'exercise more': [0, 5]} No additional explanation is needed other than the dictionary, and keep the habit length less than 7 words"
         
+        logger.info(f"Initialized PromptPlan for user: {self.username}")
         self.db = DBConnection(table="sleepMembers")
 
     def generate_advice(self):
-        prompt = self.default_prompt + self.user_stats + self.critical_factors + self.plan + self.format
-        response = self.model.generate_content(prompt)
-        cleaned = response.text.strip()
-        if cleaned.startswith("```json"):
-            cleaned = cleaned.removeprefix("```json").strip()
-        if cleaned.startswith("```"):
-            cleaned = cleaned.removeprefix("```").strip()
-        if cleaned.endswith("```"):
-            cleaned = cleaned.removesuffix("```").strip()
+        try:
+            prompt = self.default_prompt + self.user_stats + self.critical_factors + self.plan + self.format
+            response = self.model.generate_content(prompt)
+            cleaned = response.text.strip()
+            if cleaned.startswith("```json"):
+                cleaned = cleaned.removeprefix("```json").strip()
+            if cleaned.startswith("```"):
+                cleaned = cleaned.removeprefix("```").strip()
+            if cleaned.endswith("```"):
+                cleaned = cleaned.removesuffix("```").strip()
 
-        logger.info(f"Response from Gemini: {cleaned}")
+            logger.info(f"Response from Gemini: {cleaned}")
 
-        return json.loads(cleaned)
+            return json.loads(cleaned)
+        except Exception as e:
+            logger.error(f"Error generating advice: {e}")
+            raise e
 
     def save_habits(self, advice: dict): 
         values_to_update = ["habits"]

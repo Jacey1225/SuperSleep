@@ -20,11 +20,16 @@ enum AppPage: Hashable {
     case achievement
     case basicInfoOne
     case basicInfoTwo
+    case devices
+    case loading
     case dashboard
+    case habits
+    case leaderboard
 }
 
 struct ContentView: View {
-    @State private var path: [AppPage] = []
+    @State private var path: [AppPage] = [] 
+    @State private var hasDevice: Bool = false 
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -47,10 +52,29 @@ struct ContentView: View {
                     }
                 case .basicInfoTwo:
                     BasicInfoTwoView {
+                        path.append(.devices)
+                    }
+                case .devices:
+                    DevicesView(
+                        onContinue: {
+                            hasDevice = true
+                            path.append(.loading)
+                        },
+                        onSkip: {
+                            hasDevice = false
+                            path.append(.loading)
+                        }
+                    )
+                case .loading:
+                    LoadingView(hasDevice: hasDevice) {
                         path.append(.dashboard)
                     }
                 case .dashboard:
-                    DashboardView()
+                    DashboardView(path: $path) 
+                case .habits:        
+                    HabitsView(onHomeTap: { path = [.dashboard] })
+                case .leaderboard:
+                    LeaderboardView() 
                 }
             }
         }

@@ -29,7 +29,6 @@ private struct BarChartBar: View {
         if value >= 50 {
             return DashboardColors.barHealthy
         } else {
-            // Wrap the color in a gradient for type consistency
             return LinearGradient(
                 gradient: Gradient(colors: [DashboardColors.barUnhealthy, DashboardColors.barUnhealthy]),
                 startPoint: .bottom, endPoint: .top

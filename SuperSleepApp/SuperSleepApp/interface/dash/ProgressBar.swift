@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ProgressBar: View {
-    let progress: CGFloat
+    let percent: CGFloat
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -10,8 +10,8 @@ struct ProgressBar: View {
                 .frame(height: 8)
             RoundedRectangle(cornerRadius: 4)
                 .fill(DashboardColors.waveGradient)
-                .frame(width: CGFloat(progress), height: 8)
-                .animation(.easeInOut(duration: 0.4), value: progress)
+                .frame(width: CGFloat(percent), height: 8)
+                .animation(.easeInOut(duration: 0.4), value: percent)
         }
     }
 }

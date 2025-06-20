@@ -32,8 +32,13 @@ struct MainContainers: View {
                 HStack(spacing: 8) {
                     InputField(text: $weight, placeholder: "Enter your weight", keyboardType: .decimalPad)
                         .frame(maxWidth: .infinity)
-                    DropdownField(label: weightUnit, onTap: { showWeightUnitPicker = true })
-                        .frame(width: 80)
+                    Text("Lbs")
+                        .font(.custom("Sora", size: 16))
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 8)
+                        .background(Color(red: 30/255, green: 42/255, blue: 56/255).opacity(0.4))
+                        .cornerRadius(8)
                 }
             }
             ContainerContent {
@@ -41,8 +46,13 @@ struct MainContainers: View {
                 HStack(spacing: 8) {
                     InputField(text: $height, placeholder: "Enter your height", keyboardType: .decimalPad)
                         .frame(maxWidth: .infinity)
-                    DropdownField(label: heightUnit, onTap: { showHeightUnitPicker = true })
-                        .frame(width: 80)
+                    Text("Ft")
+                        .font(.custom("Sora", size: 16))
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 8)
+                        .background(Color(red: 30/255, green: 42/255, blue: 56/255).opacity(0.4))
+                        .cornerRadius(8)
                 }
             }
         }

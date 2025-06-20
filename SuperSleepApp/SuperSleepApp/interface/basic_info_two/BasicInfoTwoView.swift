@@ -34,7 +34,21 @@ struct BasicInfoTwoView: View {
                 }
                 Spacer()
                 Button(action: {
-                    onContinue()
+                    let uuid = SessionManager.shared.uuid
+                    let sleepDurationValue = sleepDuration
+                    let activityValue = activityMinutes
+                    let stressValue = stressLevel
+                    let disordersValue = (sleepDisorder == true) ? "Yes" : "No"
+
+                    AdditionalInfoService.sendAdditionalInfo(
+                        uuid: uuid,
+                        sleepDuration: sleepDurationValue,
+                        activity: activityValue,
+                        stress: stressValue,
+                        disorders: disordersValue
+                    ) { result in
+                        onContinue()
+                    }
                 }) {
                     Text("Continue")
                         .font(.custom("Sora-SemiBold", size: 20))

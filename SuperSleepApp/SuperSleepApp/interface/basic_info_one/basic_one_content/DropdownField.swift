@@ -18,6 +18,6 @@ struct DropdownField: View {
             .background(Color(red: 30/255, green: 42/255, blue: 56/255).opacity(0.4))
             .cornerRadius(8)
         }
-        .frame(maxWidth: .infinity) // Ensures button fills width of container
+        .frame(maxWidth: .infinity) 
     }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FriendCardView: View {
     let name: String
-    let progress: CGFloat
+    let percent: CGFloat
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -10,11 +10,11 @@ struct FriendCardView: View {
                     .font(DashboardFonts.section)
                     .foregroundColor(.white)
                 Spacer()
-                Text("\(Int(progress))%")
+                Text("\(Int(percent))%")
                     .font(DashboardFonts.section)
                     .foregroundColor(.white)
             }
-            ProgressBar(progress: progress)
+            ProgressBar(percent: percent)
         }
         .padding()
         .background(DashboardColors.card)

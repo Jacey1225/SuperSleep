@@ -72,58 +72,40 @@ struct AchievementView: View {
                                 .font(.custom("Sora-Regular", size: 12))
                                 .foregroundColor(.white.opacity(0.6))
                                 .multilineTextAlignment(.center)
-                            VStack(spacing: 0) {
-                                Text("Number of Units")
-                                    .font(.custom("Sora-Regular", size: 12))
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading, 8)
+                            HStack(spacing: 12) {
                                 TextField("", text: $numberInput)
                                     .keyboardType(.numberPad)
-                                    .frame(width: 60)
-                                    .padding(10)
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 60, height: 40)
+                                    .font(.custom("Sora-SemiBold", size: 18))
+                                    .foregroundColor(.white)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12)
-                                            .fill(Color(red: 40/255, green: 40/255, blue: 60/255, opacity: 0.7))
+                                            .stroke(Color("AccentPurple"), lineWidth: 1.5)
                                     )
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .stroke(Color("AccentPurple"), lineWidth: 1)
-                                    )
-                                    .foregroundColor(.white)
-                                    .font(.custom("Sora-Regular", size: 14))
-                                    .padding(.bottom, 8)
-                            }
-                            .padding(.horizontal, 8)
-                            VStack(spacing: 0) {
-                                Text("Time Range")
-                                    .font(.custom("Sora-Regular", size: 12))
-                                    .foregroundColor(.white.opacity(0.7))
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.leading, 8)
+                                    .background(Color.clear)
                                 Picker("", selection: $timeRange) {
                                     ForEach(timeOptions, id: \.self) { option in
                                         Text(option).tag(option)
                                     }
                                 }
                                 .pickerStyle(MenuPickerStyle())
-                                .frame(width: 100)
-                                .padding(10)
+                                .frame(width: 100, height: 40)
+                                .font(.custom("Sora-SemiBold", size: 18))
+                                .foregroundColor(.white)
                                 .background(
                                     RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color(red: 40/255, green: 40/255, blue: 60/255, opacity: 0.7))
+                                        .stroke(Color("AccentPurple"), lineWidth: 1.5)
                                 )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .stroke(Color("AccentPurple"), lineWidth: 1)
-                                )
-                                .foregroundColor(.white)
+                                .background(Color.clear)
                             }
-                            .padding(.horizontal, 8)
-                            .padding(.top, 4)
+                            .padding(.top, 8)
                         }
                         .padding(10)
-                        .background(RoundedRectangle(cornerRadius: 14).stroke(Color("AccentPurple"), lineWidth: 2))
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(Color("AccentPurple"), lineWidth: 2)
+                        )
                         .padding(.horizontal, 8)
                         .padding(.top, 16)
                     }

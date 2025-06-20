@@ -18,20 +18,33 @@ class CreateGroup:
         values = [group_id, self.username]
 
         try:
-            self.db.update_items(where_values, values_to_update, values)
-            logger.info(f"Group created successfully with ID: {group_id}")
+            self.db.update_items(values_to_update, where_values, values)
+            logger.info(f"{self.username} created group successfully with ID: {group_id}")
         except Exception as e:
             logger.info(f"Error creating group: {e}")
     
-    def invite_to_group(self, invite_user):
+    def join_group(self, group_id):
         values_to_update = ["group_id"]
         where_values = ["username"]
-        values = [self.username, invite_user]
+        values = [group_id, self.username]
+
         try:
-            self.db.update_items(where_values, values_to_update, values)
-            logger.info(f"User {invite_user} invited to group {self.username}'s group.")
+            self.db.update_items(values_to_update, where_values, values)
+            logger.info(f"User {self.username} has joined group {group_id}.")
         except Exception as e:
-            logger.info(f"Error inviting user to group: {e}")
+            logger.info(f"Error joining group: {e}")
+
+    # Helper -> get_group_info
+    def isolate_users(self, members):
+        unfiltered_group = members
+        group = []
+        for member in unfiltered_group:
+            member = group.pop(member)
+            username = member[1]
+            if username not in group:
+                group.append(member)
+        logger.info(f"Isolated group members: {group}")
+        return group
 
     def get_group_info(self, group_id):
         select_value = "*"
@@ -44,6 +57,7 @@ class CreateGroup:
             logger.info(f"Error retrieving group members: {e}")
             return None
         
+        members = self.isolate_users(members)
         return members
 
     def leaderboard(self, group_stats):
@@ -51,7 +65,7 @@ class CreateGroup:
         for row in group_stats:
             username = row[1]
             sleep_quality = row[7]
-            stats.append((username, sleep_quality))
+            stats.append((username, int(sleep_quality * 10)))
         sorted_stats = sorted(stats, key=lambda x: x[1], reverse=True)
 
         return sorted_stats

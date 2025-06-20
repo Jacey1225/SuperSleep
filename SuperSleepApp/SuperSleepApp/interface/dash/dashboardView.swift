@@ -1,13 +1,23 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @State private var waterPercent: CGFloat = 80
-    @State private var barValues: [CGFloat] = [90, 40, 70, 80, 30, 85, 100]
-    @State private var healthyCount: Int = 0
-    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    let friends: [(name: String, progress: CGFloat)] = [
-        ("Rachel Kim", 80), ("David Lee", 60), ("Mina Chen", 95), ("Alex Park", 45)
-    ]
+    @State private var waterPercent: CGFloat = 0
+    @State private var habits: [(name: String, progress: Int, total: Int)] = []
+    @Binding var path: [AppPage]
+
+    func loadHabits() {
+        GetHabitsService.getMicroHabits(uuid: SessionManager.shared.uuid) { result in
+            switch result {
+            case .success(let habitsDict):
+                self.habits = habitsDict.map { (key, value) in
+                    (name: key, progress: value[0], total: value[1])
+                }
+                .sorted { $0.name < $1.name }
+            case .failure:
+                self.habits = []
+            }
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -18,26 +28,43 @@ struct DashboardView: View {
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 16) {
                         TodaySummarySection(waterPercent: $waterPercent)
-                        MicroHabitSection()
-                        FiveMinuteHabitSection()
-                        WeeklyProgressSection(barValues: $barValues, healthyCount: $healthyCount, days: days)
-                        FriendsSection(friends: friends)
-                        HabitsSection()
+                        FiveMinuteHabitSection(habit: habits.first?.name ?? "—")
+                        WeeklyProgressSection()
+                        FriendsSection(onArrowTap: {
+                            path.append(.leaderboard)
+                        })
+                        HabitsSection(
+                            habits: $habits,
+                            onArrowTap: {
+                                path.append(.habits)
+                            },
+                            onHabitCompleted: { loadHabits() } 
+                        )
                     }
                     .padding(.bottom, 16)
                 }
                 DashboardDividerSection()
-                DashboardFooterSection()
+                DashboardFooterSection(
+                    onHabitsTap: {
+                        path.append(.habits)
+                    },
+                    onHomeTap: { path.append(.dashboard) }
+                )
             }
         }
-        .background(DashboardColors.background)
+        .padding(.top, 30)
         .edgesIgnoringSafeArea(.all)
         .onAppear {
-            healthyCount = barValues.filter { $0 >= 50 }.count
+            loadHabits()
+            SleepQualityService.getSleepQuality(uuid: SessionManager.shared.uuid) { result in
+                if case let .success(percent) = result {
+                    waterPercent = CGFloat(percent)
+                }
+            }
         }
     }
 }
 
 #Preview {
-    DashboardView()
+    DashboardView(path: .constant([]))
 }
