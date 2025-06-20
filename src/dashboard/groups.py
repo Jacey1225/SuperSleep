@@ -39,7 +39,6 @@ class CreateGroup:
         unfiltered_group = members
         group = []
         for member in unfiltered_group:
-            member = group.pop(member)
             username = member[1]
             if username not in group:
                 group.append(member)
